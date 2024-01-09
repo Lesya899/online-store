@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2024-01-08-18-35-create-discount.yml
+      author: ov-nikolaeva
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: volume_discount
+                  type: numeric(64,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: date_start
+                  type: timestamp
+              - column:
+                  name: date_end
+                  type: timestamp
+            remarks: Данные о скидке
+            tableName: discount

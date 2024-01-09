@@ -1,0 +1,4 @@
+databaseChangeLog:
+  - include:
+      file: "/meta/2023-12-28-17-07-create-fin-transactions.yml"
+      relativeToChangelogFile: true

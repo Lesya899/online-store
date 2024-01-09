@@ -1,0 +1,15 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: config-service
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/Lesya899/configs.git
+          username: Lesya899
+          password: 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
+          default-label: main
+          search-paths: "{application}"

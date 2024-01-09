@@ -1,0 +1,44 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2023-12-23-18-15-create-user-data.yml
+      author: ov-nikolaeva
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_name
+                  type: varchar(128)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(132)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password
+                  type: varchar(132)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: balance
+                  type: numeric(64,2)
+              - column:
+                  name: status
+                  type: varchar(132)
+              - column:
+                  name: role_id
+                  type: INT
+                  constraints:
+                   nullable: false
+                   foreignKeyName: fk_roles
+                   references: roles(id)
+            remarks: Данные пользователей
+            tableName: user_data

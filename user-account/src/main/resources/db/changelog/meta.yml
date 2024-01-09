@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - include:
+        file: "/meta/2023-12-23-20-12-create-roles.yml"
+        relativeToChangelogFile: true
+  - include:
+      file: "/meta/2023-12-23-18-15-create-user-data.yml"
+      relativeToChangelogFile: true
+

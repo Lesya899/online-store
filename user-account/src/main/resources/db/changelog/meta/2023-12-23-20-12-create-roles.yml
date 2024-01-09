@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2023-12-23-20-12-create-roles.yml
+      author: ov-nikolaeva
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: role_name
+                  type: varchar(128)
+                  constraints:
+                    nullable: false
+            remarks: Роли пользователя
+            tableName: roles

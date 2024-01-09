@@ -1,0 +1,49 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2024-01-08-18-20-create-product.yml
+      author: ov-nikolaeva
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name_product
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: numeric(64,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: quantity_stock
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: discount_id
+                  type: INT
+                  constraints:
+                    foreignKeyName: fk_discount
+                    references: discount(id)
+              - column:
+                  name: organization_id
+                  type: INT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_organization
+                    references: organization(id)
+            remarks: Данные о товаре
+            tableName: product

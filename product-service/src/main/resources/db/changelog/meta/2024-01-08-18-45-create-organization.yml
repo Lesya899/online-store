@@ -1,0 +1,31 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2024-01-08-18-45-create-organization.yml
+      author: ov-nikolaeva
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name_organization
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: logotype
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+            remarks: Данные об организации
+            tableName: organization

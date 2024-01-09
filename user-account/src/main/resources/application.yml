@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: user-account
+  config:
+    import: optional:configserver:http://localhost:8888
+
+
+
+
+
+

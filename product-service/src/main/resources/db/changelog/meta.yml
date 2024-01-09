@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - include:
+      file: "/meta/2024-01-08-18-35-create-discount.yml"
+      relativeToChangelogFile: true
+  - include:
+      file: "/meta/2024-01-08-18-45-create-organization.yml"
+      relativeToChangelogFile: true
+  - include:
+      file: "/meta/2024-01-08-18-20-create-product.yml"
+      relativeToChangelogFile: true
+
+
