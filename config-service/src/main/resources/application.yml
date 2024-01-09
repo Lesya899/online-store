@@ -9,7 +9,7 @@ spring:
       server:
         git:
           uri: https://github.com/Lesya899/configs.git
-          username: Lesya899
-          password: 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
+          username: ********
+          password: ********
           default-label: main
           search-paths: "{application}"
