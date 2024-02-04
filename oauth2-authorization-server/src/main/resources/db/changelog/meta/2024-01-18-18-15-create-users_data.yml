@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2024-01-18-18-15-create-users_data.yml
+      author: ov-nikolaeva
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_name
+                  type: varchar(128)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password
+                  type: varchar(132)
+                  constraints:
+                    nullable: false
+            remarks: Данные пользователей для аутентификации
+            tableName: users_data

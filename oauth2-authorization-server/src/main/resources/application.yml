@@ -1,0 +1,28 @@
+server:
+  port: 9000
+
+logging:
+  level:
+    org.springframework.security: trace
+spring:
+  application:
+    name: oauth2-authorization-server
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  mvc:
+    format:
+      date: iso
+  datasource:
+    url: jdbc:postgresql://localhost:5432/authentication_data
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/changelog.yml
+
