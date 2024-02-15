@@ -1,6 +1,7 @@
 package org.nikdev.oauth2authorizationserver.config;
 
 
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,16 +25,19 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
+import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
-
+import org.springframework.web.cors.CorsConfiguration;
+import java.util.List;
 import java.util.UUID;
 
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
 @RequiredArgsConstructor
 public class AuthSecurityConfig {
 
@@ -53,27 +57,34 @@ public class AuthSecurityConfig {
         return daoAuthenticationProvider;
     }
 
-
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
-    public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http)
-            throws Exception {
+    public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-        http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
-                .oidc(Customizer.withDefaults());
+        http.getConfigurer(OAuth2AuthorizationServerConfigurer.class).oidc(Customizer.withDefaults());
         http.exceptionHandling((exceptions) -> exceptions
                 .defaultAuthenticationEntryPointFor(
                         new LoginUrlAuthenticationEntryPoint("/login"),
                         new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
                 )
         );
+
         return http.build();
     }
 
     @Bean
     @Order(2)
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests((authorize) -> authorize
+        http
+                .cors(cors -> cors.configurationSource(request -> {
+                    var corsConfiguration = new CorsConfiguration();
+                    corsConfiguration.setAllowedOriginPatterns(List.of("*"));
+                    corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                    corsConfiguration.setAllowedHeaders(List.of("*"));
+                    corsConfiguration.setAllowCredentials(true);
+                    return corsConfiguration;
+                }))
+                .authorizeHttpRequests((authorize) -> authorize
                         .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults());
         return http.build();
@@ -91,10 +102,12 @@ public class AuthSecurityConfig {
                             types.add(AuthorizationGrantType.REFRESH_TOKEN);
                         }
                 )
-                .redirectUri("http://127.0.0.1:8765/login/oauth2/code/api-gateway")
+                .redirectUri("http://127.0.0.1:8765/login/oauth2/code/client-oidc")
                 .postLogoutRedirectUri("http://127.0.0.1:8765/")
                 .scope(OidcScopes.OPENID)
-                .scope("read")
+                .scope("USER")
+                .scope("ADMIN")
+                .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
                 .build();
         return new InMemoryRegisteredClientRepository(oidcClient);
     }
@@ -102,8 +115,9 @@ public class AuthSecurityConfig {
 
     @Bean
     public AuthorizationServerSettings authorizationServerSettings() {
-        return AuthorizationServerSettings.builder().build();
+        return AuthorizationServerSettings.builder().issuer("http://localhost:8080").build();
     }
+
 }
 
 

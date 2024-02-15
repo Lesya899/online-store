@@ -13,11 +13,12 @@ import org.nikdev.useraccount.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
 @RestController()
-@RequestMapping("/v1/users")
+@RequestMapping("/users")
 @Tag(name = "ProductController", description = "Действия с пользователями")
 @RequiredArgsConstructor
 public class UserController {
@@ -30,8 +31,12 @@ public class UserController {
      *
      * @return UserOutDto
      */
+
+
+
     @Operation(summary = "Получение пользователя по id")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     public ResponseEntity<UserOutDto> getUserById(@PathVariable Integer id) throws Exception {
         UserOutDto userOutDto = userService.findById(id);
         return ResponseEntity.ok(userOutDto);
@@ -45,6 +50,7 @@ public class UserController {
      */
     @Operation(summary = "Удаление/блокировка/разблокировка аккаунта пользователя")
     @PostMapping(value = "/action", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<String> performAction(@Valid @RequestBody ActionUserAccountDto actionUserAccountDto) throws Exception {
         userService.performAction(actionUserAccountDto);
         String message;
@@ -65,6 +71,7 @@ public class UserController {
      */
     @Operation(summary = "Пополнение баланса пользователя")
     @PostMapping(value = "/income", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<UserIncomeOutDto> refillBalance(@Valid @RequestBody UserIncomeDto userIncomeDto) throws Exception {
         UserIncomeOutDto userIncomeOutDto = userService.processUserIncome(userIncomeDto);
         return new ResponseEntity<>(userIncomeOutDto, HttpStatus.OK);
