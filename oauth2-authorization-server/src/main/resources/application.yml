@@ -19,8 +19,8 @@ spring:
       date: iso
   datasource:
     url: jdbc:postgresql://localhost:5432/authentication_data
-    username: postgres
-    password: postgres
+    username: ******
+    password: ******
     driver-class-name: org.postgresql.Driver
   liquibase:
     enabled: true
