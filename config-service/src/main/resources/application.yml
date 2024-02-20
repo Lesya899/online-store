@@ -1,6 +1,5 @@
 server:
-  port: 8888
-
+  port: 8885
 spring:
   application:
     name: config-service
@@ -9,7 +8,7 @@ spring:
       server:
         git:
           uri: https://github.com/Lesya899/configs.git
-          username: ********
-          password: ********
+          username: ${USER_NAME}
+          password: ${SERVER_CONFIG_PASSWORD}
           default-label: main
           search-paths: "{application}"

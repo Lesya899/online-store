@@ -2,16 +2,13 @@ package org.nikdev.oauth2authorizationserver.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.security.core.GrantedAuthority;
-
-import java.util.List;
 
 @Data
 @Entity
 @Table(name = "roles")
-public class Role implements GrantedAuthority {
+public class Role {
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -23,8 +20,5 @@ public class Role implements GrantedAuthority {
     @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "id")
     private User user;
 
-    @Override
-    public String getAuthority() {
-        return roleName;
     }
-}
+

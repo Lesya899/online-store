@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController()
-@RequestMapping("/users")
+@RequestMapping("/v1/users")
 @Tag(name = "ProductController", description = "Действия с пользователями")
 @RequiredArgsConstructor
 public class UserController {
@@ -36,7 +36,8 @@ public class UserController {
 
     @Operation(summary = "Получение пользователя по id")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
+    //@PreAuthorize("hasAnyAuthority('user', 'admin')")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<UserOutDto> getUserById(@PathVariable Integer id) throws Exception {
         UserOutDto userOutDto = userService.findById(id);
         return ResponseEntity.ok(userOutDto);
@@ -50,7 +51,7 @@ public class UserController {
      */
     @Operation(summary = "Удаление/блокировка/разблокировка аккаунта пользователя")
     @PostMapping(value = "/action", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<String> performAction(@Valid @RequestBody ActionUserAccountDto actionUserAccountDto) throws Exception {
         userService.performAction(actionUserAccountDto);
         String message;
@@ -71,7 +72,7 @@ public class UserController {
      */
     @Operation(summary = "Пополнение баланса пользователя")
     @PostMapping(value = "/income", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<UserIncomeOutDto> refillBalance(@Valid @RequestBody UserIncomeDto userIncomeDto) throws Exception {
         UserIncomeOutDto userIncomeOutDto = userService.processUserIncome(userIncomeDto);
         return new ResponseEntity<>(userIncomeOutDto, HttpStatus.OK);

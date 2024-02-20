@@ -21,3 +21,29 @@ services:
       KAFKA_CREATE_TOPICS: create_fin_transaction
 
 
+  postgres_db:
+    image: postgres:16.2
+    container_name: java-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_db:/var/lib/postgresql/data
+
+volumes:
+  postgres_db:
+    driver: local
+
+
+
+
+
+
+
+
+
+
+

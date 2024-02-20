@@ -2,10 +2,9 @@ server:
   port: 8761
 spring:
   application:
-    name: eserver
+    name: eureka-server
   config:
-    import: optional:configserver:http://localhost:8888
-eureka:
-  client:
-    register-with-eureka: false
-    fetch-registry: false
+    import: optional:configserver:http://localhost:8885
+
+
+
