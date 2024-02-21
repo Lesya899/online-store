@@ -1,10 +1,10 @@
-package org.nikdev.financialoperations.config;
+package org.nikdev.useraccount.config;
 
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.nikdev.entityservice.dto.TransactionEventDto;
+import org.nikdev.entityservice.dto.CreateAccountDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,16 +22,16 @@ import java.util.UUID;
 
 @EnableKafka
 @Configuration("consumerConfigTransactionService")
-public class KafkaConsumerConfig {
+public class CreateAccountConsumerConfig {
 
-    @Value("${spring.kafka.transaction.bootstrap-servers}")
+    @Value("${spring.kafka.account.bootstrap-servers}")
     private String bootstrapServers;
 
-    @Value("${spring.kafka.transaction.consumer.group-id.transaction}")
+    @Value("${spring.kafka.account.consumer.group-id.account}")
     private String groupId;
 
-    @Bean("transactionConsumerFactory")
-    public ConsumerFactory<String, TransactionEventDto> createTransactionConsumerFactory() {
+    @Bean("accountConsumerFactory")
+    public ConsumerFactory<String, CreateAccountDto> createAccountConsumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
@@ -40,16 +40,15 @@ public class KafkaConsumerConfig {
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonSerializer.class);
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
         return new DefaultKafkaConsumerFactory<>(props,new StringDeserializer(),
-                new JsonDeserializer<>(TransactionEventDto.class));
+                new JsonDeserializer<>(CreateAccountDto.class));
     }
 
-    @Bean("containerFactoryTransactionService")
-    public ConcurrentKafkaListenerContainerFactory<String, TransactionEventDto> createTransactionKafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, TransactionEventDto> factory =
+    @Bean("containerFactoryAccountService")
+    public ConcurrentKafkaListenerContainerFactory<String, CreateAccountDto> createAccountKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, CreateAccountDto> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(createTransactionConsumerFactory());
+        factory.setConsumerFactory(createAccountConsumerFactory());
         factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL_IMMEDIATE);
         return factory;
     }
 }
-

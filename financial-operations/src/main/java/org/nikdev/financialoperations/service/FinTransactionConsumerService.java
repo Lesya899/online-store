@@ -1,4 +1,4 @@
-package org.nikdev.financialoperations.service.kafka;
+package org.nikdev.financialoperations.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service("transactionConsumerTransactService")
 @RequiredArgsConstructor
 @Slf4j
-public class KafkaConsumerService {
+public class FinTransactionConsumerService {
 
     private final FinTransactionService finTransactionService;
 

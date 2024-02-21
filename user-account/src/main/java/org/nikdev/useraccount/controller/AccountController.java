@@ -8,8 +8,8 @@ import org.nikdev.useraccount.constant.Action;
 import org.nikdev.useraccount.dto.request.ActionUserAccountDto;
 import org.nikdev.useraccount.dto.request.UserIncomeDto;
 import org.nikdev.useraccount.dto.response.UserIncomeOutDto;
-import org.nikdev.useraccount.dto.response.UserOutDto;
-import org.nikdev.useraccount.service.UserService;
+import org.nikdev.useraccount.dto.response.UserAccountOutDto;
+import org.nikdev.useraccount.service.AccountService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,28 +19,26 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController()
 @RequestMapping("/v1/users")
-@Tag(name = "ProductController", description = "Действия с пользователями")
+@Tag(name = "AccountController", description = "Действия с аккаунтом пользователя")
 @RequiredArgsConstructor
-public class UserController {
+public class AccountController {
 
-    private final UserService userService;
+    private final AccountService accountService;
+
+
 
 
     /**
-     * Получение пользователя по id
+     * Получение аккаунта по id
      *
-     * @return UserOutDto
+     * @return UserAccountOutDto
      */
-
-
-
-    @Operation(summary = "Получение пользователя по id")
+    @Operation(summary = "Получение аккаунта по id")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    //@PreAuthorize("hasAnyAuthority('user', 'admin')")
-    @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<UserOutDto> getUserById(@PathVariable Integer id) throws Exception {
-        UserOutDto userOutDto = userService.findById(id);
-        return ResponseEntity.ok(userOutDto);
+    @PreAuthorize("hasAnyAuthority('user', 'admin')")
+    public ResponseEntity<UserAccountOutDto> getAccountById(@PathVariable Integer id) throws Exception {
+        UserAccountOutDto userAccountOutDto = accountService.findById(id);
+        return ResponseEntity.ok(userAccountOutDto);
     }
 
 
@@ -53,7 +51,7 @@ public class UserController {
     @PostMapping(value = "/action", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<String> performAction(@Valid @RequestBody ActionUserAccountDto actionUserAccountDto) throws Exception {
-        userService.performAction(actionUserAccountDto);
+        accountService.performAction(actionUserAccountDto);
         String message;
         if (actionUserAccountDto.getAction().equals(Action.DELETE)) {
             message = "User deleted";
@@ -74,7 +72,7 @@ public class UserController {
     @PostMapping(value = "/income", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<UserIncomeOutDto> refillBalance(@Valid @RequestBody UserIncomeDto userIncomeDto) throws Exception {
-        UserIncomeOutDto userIncomeOutDto = userService.processUserIncome(userIncomeDto);
+        UserIncomeOutDto userIncomeOutDto = accountService.processUserIncome(userIncomeDto);
         return new ResponseEntity<>(userIncomeOutDto, HttpStatus.OK);
     }
 }

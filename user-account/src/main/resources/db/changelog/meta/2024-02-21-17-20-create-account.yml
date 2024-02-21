@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 2023-12-23-18-15-create-user-data.yml
+      id: 2024-02-21-17-20-create-account.yml
       author: ov-nikolaeva
       changes:
         - createTable:
@@ -17,13 +17,9 @@ databaseChangeLog:
                   type: varchar(128)
                   constraints:
                     nullable: false
+                    unique: true
               - column:
                   name: email
-                  type: varchar(132)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: password
                   type: varchar(132)
                   constraints:
                     nullable: false
@@ -31,14 +27,7 @@ databaseChangeLog:
                   name: balance
                   type: numeric(64,2)
               - column:
-                  name: status
+                  name: account_status
                   type: varchar(132)
-              - column:
-                  name: role_id
-                  type: INT
-                  constraints:
-                   nullable: false
-                   foreignKeyName: fk_roles
-                   references: roles(id)
-            remarks: Данные пользователей
+            remarks: Аккаунт пользователя
             tableName: user_data

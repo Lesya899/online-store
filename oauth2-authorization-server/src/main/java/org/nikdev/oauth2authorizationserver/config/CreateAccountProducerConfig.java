@@ -1,4 +1,5 @@
-package org.nikdev.useraccount.config;
+package org.nikdev.oauth2authorizationserver.config;
+
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -12,13 +13,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-public class CreateTransactionProducerConfig {
+public class CreateAccountProducerConfig {
 
-    @Value("${spring.kafka.transaction.bootstrap-servers}")
+    @Value("${spring.kafka.account.bootstrap-servers}")
     private String bootstrapServers;
 
     @Bean
-    public <K, V> ProducerFactory<K, V> createTransactionProducerFactory(){
+    public <K, V> ProducerFactory<K, V> createAccountProducerFactory(){
         Map<String,Object> config = new HashMap<>();
         config.put(org.apache.kafka.clients.producer.ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         config.put(org.apache.kafka.clients.producer.ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
@@ -27,9 +28,7 @@ public class CreateTransactionProducerConfig {
     }
 
     @Bean
-    public <K, V> KafkaTemplate<K, V> createTransactionKafkaTemplate(){
-        return new KafkaTemplate<>(createTransactionProducerFactory());
+    public <K, V> KafkaTemplate<K, V> createAccountKafkaTemplate(){
+        return new KafkaTemplate<>(createAccountProducerFactory());
     }
 }
-
-

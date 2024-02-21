@@ -6,18 +6,18 @@ import lombok.*;
 import java.util.List;
 
 @Entity
-@Table(name = "users_data")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "users_data")
 public class User
 {
     @Id
     @GeneratedValue
     public Long id;
 
-    @Column(name = "user_name", nullable = false)
+    @Column(name = "user_name", unique = true)
     private String userName;
 
     @Column(name = "password", nullable = false)

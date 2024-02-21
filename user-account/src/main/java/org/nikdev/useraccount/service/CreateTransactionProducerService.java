@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class KafkaProducerService {
+public class CreateTransactionProducerService {
 
     @Value("${spring.kafka.transaction.topic.create-transaction}")
     private String topic;

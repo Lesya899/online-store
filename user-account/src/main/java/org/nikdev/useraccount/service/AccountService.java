@@ -2,18 +2,27 @@ package org.nikdev.useraccount.service;
 
 import org.nikdev.useraccount.dto.request.ActionUserAccountDto;
 import org.nikdev.useraccount.dto.request.UserIncomeDto;
+import org.nikdev.useraccount.dto.response.UserAccountOutDto;
 import org.nikdev.useraccount.dto.response.UserIncomeOutDto;
-import org.nikdev.useraccount.dto.response.UserOutDto;
 
-public interface UserService {
+public interface AccountService {
+
 
 
     /**
-     * Получение пользователя по id
+     * Добавление аккаунта пользователя
+     *
+     * @param userName, email
+     */
+    void addUserAccount(String userName, String email) throws Exception;
+
+
+    /**
+     * Получение аккаунта пользователя по id
      *
      * @param id
      */
-    UserOutDto findById(Integer id) throws Exception;
+    UserAccountOutDto findById(Integer id) throws Exception;
 
 
     /**

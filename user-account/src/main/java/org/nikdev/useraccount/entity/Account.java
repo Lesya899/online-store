@@ -1,0 +1,30 @@
+package org.nikdev.useraccount.entity;
+
+import jakarta.persistence.*;
+import lombok.Data;
+
+import java.math.BigDecimal;
+
+@Data
+@Entity
+@Table(name = "account")
+public class Account {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(name = "user_name", unique = true)
+    private String userName;
+
+    @Column(name = "email", nullable = false)
+    private String email;
+
+    @Column(name = "balance", nullable = false)
+    private BigDecimal balance;
+
+    @Column(name = "account_status", nullable = false)
+    public String accountStatus;
+
+
+}

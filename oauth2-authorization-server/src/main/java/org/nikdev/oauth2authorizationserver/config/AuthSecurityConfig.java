@@ -1,8 +1,6 @@
 package org.nikdev.oauth2authorizationserver.config;
 
 
-
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -106,6 +104,7 @@ public class AuthSecurityConfig {
                     return corsConfiguration;
                 }))
                 .authorizeHttpRequests((authorize) -> authorize
+                        .requestMatchers("/registration").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults());
         return http.build();
