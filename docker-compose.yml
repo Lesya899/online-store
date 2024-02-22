@@ -18,7 +18,7 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: "INTERNAL"
       KAFKA_ADVERTISED_HOST_NAME: localhost
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_CREATE_TOPICS: create_fin_transaction
+      KAFKA_CREATE_TOPICS: create_fin_transaction, account
 
 
   postgres_db:
@@ -26,8 +26,8 @@ services:
     container_name: java-postgres
     restart: always
     environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     ports:
       - 5432:5432
     volumes:

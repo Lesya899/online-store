@@ -10,7 +10,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients
-@EntityScan(basePackages = {"org.nikdev.entityservice"})
+//@EntityScan(basePackages = {"org.nikdev.entityservice"})
 public class UserAccountApplication {
 
     public static void main(String[] args) {

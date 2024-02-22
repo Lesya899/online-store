@@ -6,15 +6,14 @@ import lombok.*;
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users_data")
 public class User
 {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
     @Column(name = "user_name", unique = true)

@@ -25,6 +25,4 @@ public class Account {
 
     @Column(name = "account_status", nullable = false)
     public String accountStatus;
-
-
 }

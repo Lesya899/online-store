@@ -2,9 +2,11 @@ package org.nikdev.oauth2authorizationserver.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.nikdev.entityservice.dto.CreateAccountDto;
 import org.nikdev.oauth2authorizationserver.dto.UserCreateDto;
 import org.nikdev.oauth2authorizationserver.entity.Role;
 import org.nikdev.oauth2authorizationserver.entity.User;
+import org.nikdev.oauth2authorizationserver.repository.RoleRepository;
 import org.nikdev.oauth2authorizationserver.repository.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,6 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -22,6 +25,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
+    private final CreateAccountProducerService createAccountProducerService;
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
@@ -41,12 +46,25 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     @Transactional
     public void registrationUser(UserCreateDto userCreateDto) throws Exception {
-        User user = new User();
+        Optional<User> user = userRepository.findByUserName(userCreateDto.getUserName());
+        if (user.isPresent()) {
+            throw new Exception(String.format("Username '%s' is already in use.", userCreateDto.getUserName()));
+        }
+        User createUser = new User();
         String encodedPassword = passwordEncoder.encode(userCreateDto.getPassword());
-        user.setUserName(userCreateDto.getUserName());
-        user.setPassword(encodedPassword);
-        userRepository.save(user);
-    }
+        createUser.setUserName(userCreateDto.getUserName());
+        createUser.setPassword(encodedPassword);
+        userRepository.save(createUser);
 
+        Role role = new Role();
+        role.setRoleName(userCreateDto.getRoleName());
+        role.setUser(createUser);
+        roleRepository.save(role);
+
+        CreateAccountDto createAccountDto = new CreateAccountDto();
+        createAccountDto.setUserName(userCreateDto.getUserName());
+        createAccountDto.setEmail(userCreateDto.getEmail());
+        createAccountProducerService.sendCreateAccountEvent(createAccountDto);
+    }
 }
 
