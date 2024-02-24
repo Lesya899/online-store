@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController()
 @RequestMapping("/v1/account")
-@Tag(name = "AccountController", description = "Действия с аккаунтом пользователя")
+@Tag(name = "AccountController", description = "Действия с аккаунтом")
 @RequiredArgsConstructor
 public class AccountController {
 

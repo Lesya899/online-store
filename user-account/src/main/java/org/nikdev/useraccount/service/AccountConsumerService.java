@@ -18,6 +18,6 @@ public class AccountConsumerService {
     @KafkaListener(topics = "${spring.kafka.account.topic.create-account}", containerFactory="containerFactoryAccountService")
     public void consume(@Payload CreateAccountDto account) throws Exception {
         accountService.addUserAccount(account.getUserName(), account.getEmail());
-        log.info("Account has been successfully created for the user");
+        log.info("Account has been successfully created for the user " + account.getUserName());
     }
 }

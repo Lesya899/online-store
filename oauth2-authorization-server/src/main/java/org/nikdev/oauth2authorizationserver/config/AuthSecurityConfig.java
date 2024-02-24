@@ -11,9 +11,9 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
@@ -50,14 +50,16 @@ import com.nimbusds.jose.proc.SecurityContext;
 
 
 
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class AuthSecurityConfig {
 
-    private final UserDetailsService userDetailsService;
+
     private final CorsConfig corsConfig;
+    private final PasswordEncoder passwordEncoder;
 
     @Bean
     @Order(1)
@@ -68,45 +70,14 @@ public class AuthSecurityConfig {
                 .oidc(Customizer.withDefaults());
 
         http
-
                 .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
-                .exceptionHandling(exceptions -> exceptions
+               .exceptionHandling(exceptions -> exceptions
                         .defaultAuthenticationEntryPointFor(
-                                new LoginUrlAuthenticationEntryPoint("/login"),
+                              new LoginUrlAuthenticationEntryPoint("/login"),
                                 new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
-                        )
-                );
+                       )
+        );
         return http.build();
-    }
-
-    @Bean
-    @Order(2)
-    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        corsConfig.corsConfiguration(http);
-        http
-                .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/registration").permitAll()
-                .anyRequest().authenticated())
-                .formLogin(Customizer.withDefaults())
-                .logout(logout -> {
-                    logout.invalidateHttpSession(true);
-                    logout.clearAuthentication(true);
-                    logout.deleteCookies("JSESSIONID");
-                });
-        return http.build();
-    }
-
-    @Bean
-    public static PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider() {
-        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
-        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-        return daoAuthenticationProvider;
     }
 
 
@@ -114,7 +85,7 @@ public class AuthSecurityConfig {
     public RegisteredClientRepository registeredClientRepository() {
         RegisteredClient oidcClient = RegisteredClient.withId(UUID.randomUUID().toString())
                 .clientId("api-gateway")
-                .clientSecret(passwordEncoder().encode("secret"))
+                .clientSecret(passwordEncoder.encode("secret"))
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantTypes(types -> {
                             types.add(AuthorizationGrantType.AUTHORIZATION_CODE);

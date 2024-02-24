@@ -30,4 +30,4 @@ databaseChangeLog:
                   name: account_status
                   type: varchar(132)
             remarks: Аккаунт пользователя
-            tableName: user_data
+            tableName: account

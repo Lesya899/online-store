@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         role.setRoleName(userCreateDto.getRoleName());
         role.setUser(createUser);
         roleRepository.save(role);
-
+        //данные нового пользователя направляем через брокер в микросервис user-account для создания аккаунта
         CreateAccountDto createAccountDto = new CreateAccountDto();
         createAccountDto.setUserName(userCreateDto.getUserName());
         createAccountDto.setEmail(userCreateDto.getEmail());

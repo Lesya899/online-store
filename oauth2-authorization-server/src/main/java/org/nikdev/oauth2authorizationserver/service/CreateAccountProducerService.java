@@ -19,7 +19,7 @@ public class CreateAccountProducerService {
 
     public void sendCreateAccountEvent(CreateAccountDto accountEventDto) {
         kafkaTemplate.send(topic, String.valueOf(accountEventDto.getUserName()), accountEventDto);
-        log.info("User details for creating an account have been sent to Kafka topic");
+        log.info("User details for creating an account have been sent to Kafka topic" + accountEventDto );
     }
 }
 
