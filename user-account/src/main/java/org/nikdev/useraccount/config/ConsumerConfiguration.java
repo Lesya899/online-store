@@ -15,14 +15,13 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.listener.ContainerProperties;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 @EnableKafka
-@Configuration("consumerConfigTransactionService")
-public class CreateAccountConsumerConfig {
+@Configuration
+public class ConsumerConfiguration {
 
     @Value("${spring.kafka.account.bootstrap-servers}")
     private String bootstrapServers;
@@ -30,7 +29,8 @@ public class CreateAccountConsumerConfig {
     @Value("${spring.kafka.account.consumer.group-id.account}")
     private String groupId;
 
-    @Bean("accountConsumerFactory")
+
+    @Bean
     public ConsumerFactory<String, CreateAccountDto> createAccountConsumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
@@ -38,6 +38,7 @@ public class CreateAccountConsumerConfig {
         props.put(ConsumerConfig.CLIENT_ID_CONFIG, UUID.randomUUID().toString());
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringSerializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest");
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
         return new DefaultKafkaConsumerFactory<>(props,new StringDeserializer(),
                 new JsonDeserializer<>(CreateAccountDto.class));

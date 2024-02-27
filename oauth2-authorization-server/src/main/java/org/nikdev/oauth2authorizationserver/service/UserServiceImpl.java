@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
-    private final CreateAccountProducerService createAccountProducerService;
+    private final ProducerService producerService;
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         CreateAccountDto createAccountDto = new CreateAccountDto();
         createAccountDto.setUserName(userCreateDto.getUserName());
         createAccountDto.setEmail(userCreateDto.getEmail());
-        createAccountProducerService.sendCreateAccountEvent(createAccountDto);
+        producerService.sendCreateAccountEvent(createAccountDto);
     }
 }
 
