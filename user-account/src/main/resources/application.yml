@@ -6,18 +6,6 @@ spring:
   config:
     import: optional:configserver:http://localhost:8885
 
-  kafka:
-    account:
-      bootstrap-servers: ${KAFKA_CONNECTION_BOOTSTRAP_SERVERS:localhost:9092}
-      topic:
-        create-account: create_account
-      consumer:
-        group-id:
-          account: account
-    consumer:
-      auto-offset-reset: earliest
-      properties:
-        spring:
-          json:
-            trusted:
-              packages: '*'
+
+
+

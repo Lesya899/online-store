@@ -23,7 +23,7 @@ import java.util.UUID;
 @Configuration
 public class ConsumerConfiguration {
 
-    @Value("${spring.kafka.account.bootstrap-servers}")
+    @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServers;
 
     @Value("${spring.kafka.account.consumer.group-id.account}")

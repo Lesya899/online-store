@@ -14,7 +14,7 @@ import java.util.Map;
 @Configuration
 public class CreateTransactionProducerConfig {
 
-    @Value("${spring.kafka.transaction.bootstrap-servers}")
+    @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServers;
 
     @Bean

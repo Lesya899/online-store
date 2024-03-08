@@ -5,15 +5,6 @@ spring:
     name: oauth2-authorization-server
   config:
     import: optional:configserver:http://localhost:8885
-  kafka:
-    account:
-      bootstrap-servers: ${KAFKA_CONNECTION_BOOTSTRAP_SERVERS:localhost:9092}
-      topic:
-        create-account: create_account
-    producer:
-      properties:
-        spring:
-          json:
-            add:
-              type:
-                headers: false
+
+
+
