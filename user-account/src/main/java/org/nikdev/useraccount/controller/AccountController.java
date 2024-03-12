@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController()
 @RequestMapping("/v1/account")
@@ -39,6 +41,20 @@ public class AccountController {
     public ResponseEntity<UserAccountOutDto> getAccountById(@PathVariable Integer id) throws Exception {
         UserAccountOutDto userAccountOutDto = accountService.findById(id);
         return ResponseEntity.ok(userAccountOutDto);
+    }
+
+
+    /**
+     * Получение списка всех адресов электронной почты
+     *
+     * @return listEmailAdress
+     */
+    @Operation(summary = "Получение списка адресов электронной почты")
+    @GetMapping(value = "/email-addresses", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAnyAuthority('admin')")
+    public ResponseEntity<List<String>> getEmailAddresses() throws Exception {
+        List<String> listEmail = accountService.findEmailAddresses();
+        return ResponseEntity.ok(listEmail);
     }
 
 

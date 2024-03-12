@@ -29,7 +29,6 @@ public class WebConfiguration {
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         corsConfig.corsConfiguration(http);
         http.csrf(AbstractHttpConfigurer::disable)
-                .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/v1/auth/registration").permitAll()
                         .anyRequest().authenticated())

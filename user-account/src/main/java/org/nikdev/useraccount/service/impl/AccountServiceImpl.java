@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +45,11 @@ public class AccountServiceImpl implements AccountService {
         Account userAccount = accountRepository.findById(id)
                 .orElseThrow(() -> new Exception("User with id " + id + " not found"));
         return accountMapper.toDto(userAccount);
+    }
+
+    @Override
+    public List<String> findEmailAddresses()  {
+        return accountRepository.findAllEmailAdresses();
     }
 
     @Override

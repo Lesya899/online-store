@@ -19,7 +19,6 @@ public class GatewayConfig {
                 .anyExchange().authenticated())
                 .oauth2Login(Customizer.withDefaults())
                 .csrf(ServerHttpSecurity.CsrfSpec::disable);
-
         return http.build();
     }
 }

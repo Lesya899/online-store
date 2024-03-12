@@ -24,7 +24,6 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-
         httpSecurity.authorizeHttpRequests(authorize -> authorize
                         .anyRequest().authenticated())
                 .oauth2ResourceServer((oauth2) -> oauth2

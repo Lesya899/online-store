@@ -5,6 +5,8 @@ import org.nikdev.useraccount.dto.request.UserIncomeDto;
 import org.nikdev.useraccount.dto.response.UserAccountOutDto;
 import org.nikdev.useraccount.dto.response.UserIncomeOutDto;
 
+import java.util.List;
+
 public interface AccountService {
 
 
@@ -23,6 +25,14 @@ public interface AccountService {
      * @param id
      */
     UserAccountOutDto findById(Integer id) throws Exception;
+
+
+    /**
+     * Получение списка всех адресов электронной почты
+     *
+     *
+     */
+    List<String> findEmailAddresses() throws Exception;
 
 
     /**
