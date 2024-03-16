@@ -13,7 +13,7 @@ import org.nikdev.useraccount.service.AccountService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,7 +37,7 @@ public class AccountController {
      */
     @Operation(summary = "Получение аккаунта по id")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyAuthority('user', 'admin')")
+    //@PreAuthorize("hasAnyAuthority('user', 'admin')")
     public ResponseEntity<UserAccountOutDto> getAccountById(@PathVariable Integer id) throws Exception {
         UserAccountOutDto userAccountOutDto = accountService.findById(id);
         return ResponseEntity.ok(userAccountOutDto);
@@ -51,7 +51,7 @@ public class AccountController {
      */
     @Operation(summary = "Получение списка адресов электронной почты")
     @GetMapping(value = "/email-addresses", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyAuthority('admin')")
+    //@PreAuthorize("hasAnyAuthority('admin')")
     public ResponseEntity<List<String>> getEmailAddresses() throws Exception {
         List<String> listEmail = accountService.findEmailAddresses();
         return ResponseEntity.ok(listEmail);
@@ -65,7 +65,7 @@ public class AccountController {
      */
     @Operation(summary = "Удаление/блокировка/разблокировка аккаунта пользователя")
     @PostMapping(value = "/action", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('admin')")
+    //@PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<String> performAction(@Valid @RequestBody ActionUserAccountDto actionUserAccountDto) throws Exception {
         accountService.performAction(actionUserAccountDto);
         String message;
@@ -86,7 +86,7 @@ public class AccountController {
      */
     @Operation(summary = "Пополнение баланса пользователя")
     @PostMapping(value = "/income", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('admin')")
+    //@PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<UserIncomeOutDto> refillBalance(@Valid @RequestBody UserIncomeDto userIncomeDto) throws Exception {
         UserIncomeOutDto userIncomeOutDto = accountService.processUserIncome(userIncomeDto);
         return new ResponseEntity<>(userIncomeOutDto, HttpStatus.OK);
