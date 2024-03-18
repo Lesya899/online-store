@@ -9,5 +9,5 @@ public interface ProductService {
      *
      */
 
-    void saveProduct(ProductSaveDto productSaveDto) throws Exception;
+    void saveAndUpdateProduct(ProductSaveDto productSaveDto) throws Exception;
 }

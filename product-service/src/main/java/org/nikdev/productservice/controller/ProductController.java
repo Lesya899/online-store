@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import static org.nikdev.productservice.constant.MessageConstants.Product.SAVING_PRODUCT_SUCCESSFUL;
 
 @RestController
 @RequestMapping(value = "/v1/products")
@@ -19,15 +20,11 @@ public class ProductController {
     private final ProductService productService;
 
 
-    /**
-     * Добавление/обновление товара
-     *
-     * @return JsonResponse
-     */
-    @Operation(summary = "Добавление товара")
+
+    @Operation(summary = "Добавление/изменениу товара")
     @PostMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> saveProduct(@RequestBody ProductSaveDto productSaveDto) throws Exception {
-        productService.saveProduct(productSaveDto);
-        return ResponseEntity.status(HttpStatus.OK).body("Operation completed successfully");
+    public ResponseEntity<String> saveAndUpdateProduct(@RequestBody ProductSaveDto productSaveDto) throws Exception {
+        productService.saveAndUpdateProduct(productSaveDto);
+        return ResponseEntity.status(HttpStatus.OK).body(SAVING_PRODUCT_SUCCESSFUL);
     }
 }

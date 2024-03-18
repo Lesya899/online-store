@@ -1,5 +1,8 @@
 databaseChangeLog:
   - include:
+      file: "/meta/2024-03-18-19-00-create-discount-type.yml"
+      relativeToChangelogFile: true
+  - include:
       file: "/meta/2024-01-08-18-35-create-discount.yml"
       relativeToChangelogFile: true
   - include:

@@ -3,8 +3,6 @@ package org.nikdev.productservice.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -19,8 +17,9 @@ public class DiscountEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column (name = "volume_discount")
-    private BigDecimal volumeDiscount;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "type_id")
+    private  DiscountType discountType;
 
     @Column(name = "date_start")
     private LocalDateTime dateStart;

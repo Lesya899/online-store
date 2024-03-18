@@ -13,10 +13,11 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: volume_discount
-                  type: numeric(64,2)
+                  name: type_id
+                  type: INT
                   constraints:
-                    nullable: false
+                    foreignKeyName: fk_discount_type
+                    references: discount_type(id)
               - column:
                   name: date_start
                   type: timestamp
