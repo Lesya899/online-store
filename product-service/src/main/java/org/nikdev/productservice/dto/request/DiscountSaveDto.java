@@ -12,8 +12,8 @@ public class DiscountSaveDto {
     @Schema(description = "ID скидки")
     private Integer id;
 
-    @Schema(description = "Размер скидки")
-    private Integer discountAmount;
+    @Schema(description = "Тип скидки")
+    private String discountType;
 
     @Schema(description = "Дата начала действия скидки")
     private LocalDateTime dateStart;

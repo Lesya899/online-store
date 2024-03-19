@@ -21,7 +21,7 @@ public class ProductController {
 
 
 
-    @Operation(summary = "Добавление/изменениу товара")
+    @Operation(summary = "Добавление/изменение товара")
     @PostMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> saveAndUpdateProduct(@RequestBody ProductSaveDto productSaveDto) throws Exception {
         productService.saveAndUpdateProduct(productSaveDto);

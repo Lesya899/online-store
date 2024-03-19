@@ -13,11 +13,8 @@ import org.nikdev.productservice.repository.ProductRepository;
 import org.nikdev.productservice.service.ProductService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Optional;
-
 import static org.nikdev.productservice.constant.DiscountTypeConstant.DISCOUNT_NOT_APPLIED;
-import static org.nikdev.productservice.constant.MessageConstants.Discount.DISCOUNT_NOT_FOUND;
 import static org.nikdev.productservice.constant.MessageConstants.Organization.ORGANIZATION_ID_NOT_SET_ERROR;
 import static org.nikdev.productservice.constant.MessageConstants.Organization.ORGANIZATION_NOT_FOUND;
 import static org.nikdev.productservice.constant.MessageConstants.Product.PRODUCT_NOT_FOUND;
@@ -58,6 +55,7 @@ public class ProductServiceImpl implements ProductService {
                 discount.setDiscountType(discountType);
                 discount.setDateStart(productSaveDto.getDateStart());
                 discount.setDateEnd(productSaveDto.getDateEnd());
+                discountRepository.save(discount);
                 productEntity.setDiscount(discount);
             }
         }
