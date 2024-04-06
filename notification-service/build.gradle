@@ -36,6 +36,9 @@ dependencies {
     implementation 'org.springframework.integration:spring-integration-mail'
     implementation 'org.springframework.boot:spring-boot-starter-mail:3.2.3'
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    implementation 'org.nikdev:entity-service:0.0.1-SNAPSHOT'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

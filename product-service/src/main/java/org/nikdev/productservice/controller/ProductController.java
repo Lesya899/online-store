@@ -3,12 +3,17 @@ package org.nikdev.productservice.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.nikdev.entityservice.dto.ProductDiscountedDto;
 import org.nikdev.productservice.dto.request.ProductSaveDto;
 import org.nikdev.productservice.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+
+import java.util.List;
+
 import static org.nikdev.productservice.constant.MessageConstants.Product.SAVING_PRODUCT_SUCCESSFUL;
 
 @RestController
@@ -26,5 +31,13 @@ public class ProductController {
     public ResponseEntity<String> saveAndUpdateProduct(@RequestBody ProductSaveDto productSaveDto) throws Exception {
         productService.saveAndUpdateProduct(productSaveDto);
         return ResponseEntity.status(HttpStatus.OK).body(SAVING_PRODUCT_SUCCESSFUL);
+    }
+
+
+    @Operation(summary = "Получение товаров, на которые действует скидка")
+    @GetMapping(value = "/discount/list", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<ProductDiscountedDto>> getDiscountedProducts() throws Exception {
+        List<ProductDiscountedDto> productDiscountedDtoList = productService.getListDiscountedProducts();
+        return ResponseEntity.ok(productDiscountedDtoList);
     }
 }

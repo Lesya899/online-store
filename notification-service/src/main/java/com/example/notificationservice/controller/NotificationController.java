@@ -1,5 +1,6 @@
 package com.example.notificationservice.controller;
 
+import com.example.notificationservice.client.ProductFeignClient;
 import com.example.notificationservice.client.UserAccountFeignClient;
 import com.example.notificationservice.dto.EmailSendDto;
 import com.example.notificationservice.service.EmailServiceImpl;
@@ -20,6 +21,7 @@ public class NotificationController {
 
     private final EmailServiceImpl emailServiceImpl;
     private final UserAccountFeignClient userAccountFeignClient;
+    private final ProductFeignClient productFeignClient;
 
 
 
@@ -33,7 +35,7 @@ public class NotificationController {
     @PostMapping (value = "/send-email", produces = MediaType.APPLICATION_JSON_VALUE)
     //@PreAuthorize("hasAnyAuthority('admin')")
     public ResponseEntity<String> sendEmailByAllAccount(@RequestBody EmailSendDto emailSendDto) throws Exception {
-        emailServiceImpl.sendEmailOfDiscounts(emailSendDto, userAccountFeignClient.getEmails());
+        emailServiceImpl.sendEmailOfDiscounts(emailSendDto, userAccountFeignClient.getEmails(), productFeignClient.getDiscountedProducts());
         return new ResponseEntity<>(NOTIFICATION_SENT_SUCCESSFULLY, HttpStatus.OK);
     }
 }

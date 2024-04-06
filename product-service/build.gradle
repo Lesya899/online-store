@@ -35,6 +35,7 @@ dependencies {
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
     implementation 'io.swagger:swagger-annotations:2.0.0-rc2'
     implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
+    implementation 'org.nikdev:entity-service:0.0.1-SNAPSHOT'
 
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'org.postgresql:postgresql'

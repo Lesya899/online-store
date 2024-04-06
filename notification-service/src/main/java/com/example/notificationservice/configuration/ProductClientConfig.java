@@ -1,10 +1,9 @@
-package com.example.notificationservice.config;
+package com.example.notificationservice.configuration;
 
 import feign.Logger;
 import org.springframework.context.annotation.Bean;
 
-public class NotificationClientConfig {
-
+public class ProductClientConfig {
 
     @Bean
     public Logger.Level feignLoggerLevel() {

@@ -38,6 +38,7 @@ databaseChangeLog:
                   constraints:
                     foreignKeyName: fk_discount
                     references: discount(id)
+                    nullable: true
               - column:
                   name: organization_id
                   type: INT

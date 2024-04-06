@@ -1,5 +1,6 @@
-package com.example.notificationservice.client;
+package com.example.notificationservice.client.fallback;
 
+import com.example.notificationservice.client.UserAccountFeignClient;
 import com.example.notificationservice.exception.FallBackException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.openfeign.FallbackFactory;
@@ -7,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class NotificationClientFallBackFactory implements FallbackFactory<UserAccountFeignClient> {
+public class UserAccountClientFallBackFactory implements FallbackFactory<UserAccountFeignClient> {
 
 
     @Override
