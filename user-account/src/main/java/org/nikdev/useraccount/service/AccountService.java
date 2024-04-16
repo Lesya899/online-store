@@ -12,11 +12,11 @@ public interface AccountService {
 
 
     /**
-     * Добавление аккаунта пользователя
+     * Создание аккаунта пользователя
      *
      * @param userName, email
      */
-    void addUserAccount(String userName, String email) throws Exception;
+    void createUserAccount(String userName, String email) throws Exception;
 
 
     /**

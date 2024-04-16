@@ -15,10 +15,10 @@ import org.nikdev.useraccount.service.CreateTransactionProducerService;
 import org.nikdev.useraccount.service.AccountService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import static org.nikdev.useraccount.constant.ExceptionMessages.*;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +30,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void addUserAccount(String userName, String email) throws Exception {
+    public void createUserAccount(String userName, String email) throws Exception {
         Account account = new Account();
         account.setUserName(userName);
         account.setEmail(email);
@@ -42,8 +42,11 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public UserAccountOutDto findById(Integer id) throws Exception {
+        if (id == null) {
+            throw new Exception(USER_ID_NOT_SET_ERROR);
+        }
         Account userAccount = accountRepository.findById(id)
-                .orElseThrow(() -> new Exception("User with id " + id + " not found"));
+                .orElseThrow(() -> new Exception(String.format(USER_NOT_FOUND_ERROR, id)));
         return accountMapper.toDto(userAccount);
     }
 
@@ -56,7 +59,7 @@ public class AccountServiceImpl implements AccountService {
     @Transactional(rollbackFor = Exception.class)
     public void performAction(ActionUserAccountDto actionUserAccountDto) throws Exception {
         Account account = accountRepository.findById(actionUserAccountDto.getId())
-                .orElseThrow(() -> new Exception("User with id " + actionUserAccountDto.getId() + " not found"));
+                .orElseThrow(() -> new Exception(String.format(USER_NOT_FOUND_ERROR, actionUserAccountDto.getId())));
         if (actionUserAccountDto.getAction().equals(Action.DELETE)) {
             accountRepository.deleteById(actionUserAccountDto.getId());
         } else {
@@ -72,12 +75,12 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public UserIncomeOutDto processUserIncome(UserIncomeDto userIncomeDto) throws Exception {
-        Account userAccount = accountRepository.findById(userIncomeDto.getUserId())
-                .orElseThrow(() -> new Exception("User with id " + userIncomeDto.getUserId() + " not found"));
+        Account userAccount = accountRepository.findById(userIncomeDto.getId())
+                .orElseThrow(() -> new Exception(String.format(USER_NOT_FOUND_ERROR, userIncomeDto.getId())));
         userAccount.setBalance(userAccount.getBalance().add(userIncomeDto.getAmount()));
         accountRepository.save(userAccount);
         TransactionEventDto transactional = new TransactionEventDto();
-        transactional.setUserId(userIncomeDto.getUserId());
+        transactional.setAccountId(userIncomeDto.getId());
         transactional.setCreateAt(LocalDateTime.now());
         transactional.setAmount(userIncomeDto.getAmount());
         createTransactionProducerService.sendCreateTransactionEvent(transactional);

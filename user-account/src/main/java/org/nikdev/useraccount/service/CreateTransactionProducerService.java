@@ -19,7 +19,7 @@ public class CreateTransactionProducerService {
     private final  KafkaTemplate<String , TransactionEventDto> kafkaTemplate;
 
     public void sendCreateTransactionEvent(TransactionEventDto transactionEventDto) {
-        kafkaTemplate.send(topic, String.valueOf(transactionEventDto.getUserId()), transactionEventDto);
+        kafkaTemplate.send(topic, String.valueOf(transactionEventDto.getAccountId()), transactionEventDto);
         log.info("New user transaction data send to Kafka topic : "+ transactionEventDto);
         }
     }

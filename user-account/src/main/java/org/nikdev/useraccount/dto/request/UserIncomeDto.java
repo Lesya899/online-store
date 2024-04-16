@@ -9,8 +9,8 @@ import java.math.BigDecimal;
 public class UserIncomeDto {
 
 
-    @Schema(description = "ID пользователя")
-    private Integer userId;
+    @Schema(description = "ID аккаунта")
+    private Integer id;
 
     @Schema(description = "Сумма")
     private BigDecimal amount;

@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class TransactionEventDto {
 
 
-    private Integer userId;
+    private Integer accountId;
     private BigDecimal amount;
     private LocalDateTime createAt;
 }
