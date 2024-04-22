@@ -42,6 +42,9 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.kafka:spring-kafka-test:3.1.4'
+    testImplementation 'com.h2database:h2:2.2.224'
+
 }
 
 dependencyManagement {

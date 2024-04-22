@@ -1,12 +1,19 @@
 package org.nikdev.productservice.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 
 @Data
 @Entity
 @Table(name = "organization")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class OrganizationEntity {
 
     @Id
@@ -19,7 +26,7 @@ public class OrganizationEntity {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "logotype", nullable = false)
+    @Column(name = "logotype")
     private String logotype;
 
 

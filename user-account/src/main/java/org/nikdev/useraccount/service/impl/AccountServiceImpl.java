@@ -11,7 +11,6 @@ import org.nikdev.useraccount.dto.response.UserIncomeOutDto;
 import org.nikdev.useraccount.entity.Account;
 import org.nikdev.useraccount.mapper.AccountMapper;
 import org.nikdev.useraccount.repository.AccountRepository;
-import org.nikdev.useraccount.service.CreateTransactionProducerService;
 import org.nikdev.useraccount.service.AccountService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

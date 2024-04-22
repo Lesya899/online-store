@@ -3,7 +3,11 @@ package org.nikdev.productservice.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +16,9 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "product")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProductEntity {
 
     @Id

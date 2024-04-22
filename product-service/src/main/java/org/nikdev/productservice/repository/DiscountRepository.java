@@ -18,7 +18,7 @@ public interface DiscountRepository extends JpaRepository<DiscountEntity, Intege
      */
     @Query("select d from DiscountEntity d where d.discountType.name = :discountType and " +
             "d.dateStart = :dateStart and d.dateEnd = :dateEnd")
-    Optional<DiscountEntity> findDiscountByDiscountTypeAndDateStartBetween(@Param("discountType") String discountType,
+    Optional<DiscountEntity> findDiscountByTypeAndDateStartBetween(@Param("discountType") String discountType,
                                                                           @Param("dateStart") LocalDateTime dateStart,
                                                                           @Param("dateEnd") LocalDateTime dateEnd);
 

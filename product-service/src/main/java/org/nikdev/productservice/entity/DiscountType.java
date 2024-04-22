@@ -1,11 +1,15 @@
 package org.nikdev.productservice.entity;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
+
 import java.util.List;
 
 @Data
 @Entity
 @Table(name = "discount_type")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class DiscountType {
 
     @Id
@@ -20,4 +24,6 @@ public class DiscountType {
 
     @OneToMany(mappedBy = "discountType", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DiscountEntity> listDiscount;
+
+
 }

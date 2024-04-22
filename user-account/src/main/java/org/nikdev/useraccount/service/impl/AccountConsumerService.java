@@ -1,9 +1,10 @@
-package org.nikdev.useraccount.service;
+package org.nikdev.useraccount.service.impl;
 
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.nikdev.entityservice.dto.CreateAccountDto;
+import org.nikdev.useraccount.service.AccountService;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;

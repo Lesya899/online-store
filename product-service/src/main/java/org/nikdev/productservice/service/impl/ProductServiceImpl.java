@@ -55,7 +55,7 @@ public class ProductServiceImpl implements ProductService {
             productEntity.setDiscount(discountEntity);
         }else{
             //проверяем наличие в БД скидки с указанным типом и промежутком дат {
-            Optional<DiscountEntity> discountEntity = discountRepository.findDiscountByDiscountTypeAndDateStartBetween(productSaveDto.getDiscountType(),
+            Optional<DiscountEntity> discountEntity = discountRepository.findDiscountByTypeAndDateStartBetween(productSaveDto.getDiscountType(),
                     productSaveDto.getDateStart(), productSaveDto.getDateEnd());
             //если есть уже такая скидка, то  добавляем ее для товара
             if (discountEntity.isPresent()) {

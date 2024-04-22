@@ -6,7 +6,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.nikdev.entityservice.dto.TransactionEventDto;
@@ -17,14 +16,11 @@ import org.nikdev.useraccount.dto.response.UserIncomeOutDto;
 import org.nikdev.useraccount.entity.Account;
 import org.nikdev.useraccount.mapper.AccountMapper;
 import org.nikdev.useraccount.repository.AccountRepository;
-import org.nikdev.useraccount.service.CreateTransactionProducerService;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.nikdev.useraccount.constant.AccountState.ACTIVE;
@@ -58,7 +54,6 @@ class AccountServiceImplTest {
         account.setEmail(email);
         account.setBalance(BigDecimal.ZERO);
         account.setAccountStatus(ACTIVE);
-        Mockito.when(accountRepository.save(account)).thenReturn(account);
         accountService.createUserAccount(userName, email);
         verify(accountRepository, times(1)).save(account);
     }
@@ -90,7 +85,7 @@ class AccountServiceImplTest {
     }
 
     @Test
-    void findEmailAddresses() {
+    void findEmailAddressesTest() {
         List<String> expectedListAddresses = Arrays.asList("antaF2@mail.ru", "lima34@mail.ru");
         when(accountRepository.findAllEmailAdresses()).thenReturn(expectedListAddresses);
         List<String> actualListAddresses = accountService.findEmailAddresses();
@@ -99,7 +94,7 @@ class AccountServiceImplTest {
 
 
     @Test
-    void performAction() throws Exception {
+    void performActionTest() throws Exception {
         when(accountRepository.findById(NO_EXISTING_ID)).thenReturn(null);
         Assertions.assertThrows(Exception.class, () -> accountService.findById(NO_EXISTING_ID), USER_NOT_FOUND_ERROR);
 
@@ -118,7 +113,7 @@ class AccountServiceImplTest {
     }
 
     @Test
-    void processUserIncome() throws Exception {
+    void processUserIncomeTest() throws Exception {
         when(accountRepository.findById(NO_EXISTING_ID)).thenReturn(null);
         Assertions.assertThrows(Exception.class, () -> accountService.findById(NO_EXISTING_ID), USER_NOT_FOUND_ERROR);
 

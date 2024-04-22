@@ -29,5 +29,7 @@ databaseChangeLog:
               - column:
                   name: account_status
                   type: varchar(132)
+                  constraints:
+                    nullable: false
             remarks: Аккаунт пользователя
             tableName: account

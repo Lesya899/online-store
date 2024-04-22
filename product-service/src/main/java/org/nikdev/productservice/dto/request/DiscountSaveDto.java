@@ -1,12 +1,14 @@
 package org.nikdev.productservice.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Data;
 import java.time.LocalDateTime;
 
 
 @Data
 @Schema(description = "Данные для сохранения скидки")
+@Builder
 public class DiscountSaveDto {
 
     @Schema(description = "ID скидки")
