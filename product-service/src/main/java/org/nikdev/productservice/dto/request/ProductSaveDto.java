@@ -1,12 +1,14 @@
 package org.nikdev.productservice.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 
 @Data
+@Builder
 @Schema(description = "Данные для сохранения товара")
 public class ProductSaveDto {
 
