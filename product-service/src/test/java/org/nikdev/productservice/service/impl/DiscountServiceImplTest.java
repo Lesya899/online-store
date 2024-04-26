@@ -34,11 +34,11 @@ class DiscountServiceImplTest {
     private DiscountTypeRepository discountTypeRepository;
 
     @InjectMocks
-    DiscountServiceImpl discountService;
+    private DiscountServiceImpl discountService;
 
-    DiscountType discountType;
+    private DiscountType discountType;
 
-    DiscountSaveDto discountSaveDto;
+    private DiscountSaveDto discountSaveDto;
 
     @BeforeEach
     public void setup() {
@@ -58,7 +58,7 @@ class DiscountServiceImplTest {
 
     @Test
     public void shouldReturnNotFound(){
-        when(discountRepository.findById(NO_EXISTING_ID)).thenReturn(null);
+        when(discountRepository.findById(NO_EXISTING_ID)).thenReturn(Optional.empty());
         Assertions.assertThrows(Exception.class, () -> discountService.saveAndUpdateDiscount(discountSaveDto), DISCOUNT_NOT_FOUND);
     }
 

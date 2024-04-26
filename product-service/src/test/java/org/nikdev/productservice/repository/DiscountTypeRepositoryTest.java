@@ -12,10 +12,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class DiscountTypeRepositoryTest {
 
     @Autowired
-    DiscountTypeRepository discountTypeRepository;
+    private DiscountTypeRepository discountTypeRepository;
 
     @Test
-    void findDiscountTypeByName() {
+    void shouldFindDiscountTypeByName() {
         DiscountType expectedDiscountType = DiscountType.builder()
                 .name("Разовая")
                 .discountAmount(20)

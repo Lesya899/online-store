@@ -50,7 +50,7 @@ public class ProductServiceImpl implements ProductService {
         //если указано, что "Скидка не применяется"
         if (productSaveDto.getDiscountType().equals(DISCOUNT_NOT_APPLIED)) {
             DiscountType discountType = discountTypeRepository.findDiscountTypeByName(DISCOUNT_NOT_APPLIED);
-            DiscountEntity discountEntity = discountRepository.findById(discountType.getId())
+            DiscountEntity discountEntity = discountRepository.findByDiscountTypeId(discountType.getId())
                     .orElseThrow(() -> new Exception(DISCOUNT_NOT_FOUND));
             productEntity.setDiscount(discountEntity);
         }else{

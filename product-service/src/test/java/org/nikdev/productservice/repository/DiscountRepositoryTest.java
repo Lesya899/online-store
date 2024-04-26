@@ -20,7 +20,7 @@ class DiscountRepositoryTest {
     private DiscountTypeRepository discountTypeRepository;
 
     @Test
-    void findDiscountByTypeAndDateStartBetweenTest() {
+    void shouldFindDiscountByTypeAndDateStartBetweenTest() {
         DiscountType discountType = DiscountType.builder()
                 .name("Периодическая")
                 .discountAmount(15)

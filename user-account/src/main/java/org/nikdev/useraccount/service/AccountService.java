@@ -24,7 +24,7 @@ public interface AccountService {
      *
      * @param id
      */
-    UserAccountOutDto findById(Integer id) throws Exception;
+    UserAccountOutDto findAccountById(Integer id) throws Exception;
 
 
     /**

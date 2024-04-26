@@ -2,8 +2,8 @@ package org.nikdev.useraccount.controller;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.nikdev.useraccount.dto.request.ActionUserAccountDto;
 import org.nikdev.useraccount.dto.request.UserIncomeDto;
 import org.nikdev.useraccount.dto.response.UserAccountOutDto;
@@ -42,18 +42,31 @@ class AccountControllerTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    AccountService accountService;
+    private AccountService accountService;
 
+    private ActionUserAccountDto actionUserAccountDto;
+
+
+    @BeforeEach
+    void setUp() {
+        actionUserAccountDto = ActionUserAccountDto.builder()
+                .id(ACCOUNT_ID)
+                .action(DELETE)
+                .build();
+
+    }
 
 
     @Test
-    void getAccountByIdTest() throws Exception {
-        UserAccountOutDto expectedAccountOutDto = new UserAccountOutDto();
-        expectedAccountOutDto.setUserName("innaGF8");
-        expectedAccountOutDto.setEmail("inna@mail.ru");
-        expectedAccountOutDto.setBalance(BigDecimal.valueOf(20000));
-        expectedAccountOutDto.setAccountStatus(ACTIVE);
-        when(accountService.findById(ACCOUNT_ID)).thenReturn(expectedAccountOutDto);
+    void shouldReturnAccountById() throws Exception {
+        UserAccountOutDto expectedAccountOutDto = UserAccountOutDto.builder()
+                .userName("innaGF8")
+                .email("inna@mail.ru")
+                .balance(BigDecimal.valueOf(20000))
+                .accountStatus(ACTIVE)
+                .build();
+
+        when(accountService.findAccountById(ACCOUNT_ID)).thenReturn(expectedAccountOutDto);
         mockMvc.perform(get("/v1/account/{id}", ACCOUNT_ID)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -67,7 +80,7 @@ class AccountControllerTest {
 
 
     @Test
-    void getEmailAddressesTest() throws Exception {
+    void shouldReturnEmailAddresses() throws Exception {
         List<String> listEmail = new ArrayList<>(
                 Arrays.asList("inna@mail.ru", "dump45@mail.ru", "verch2d@mail.ru"));
         when(accountService.findEmailAddresses()).thenReturn(listEmail);
@@ -80,28 +93,23 @@ class AccountControllerTest {
 
 
     @Test
-    void deleteAccountTest() throws Exception {
-        ActionUserAccountDto actionUserAccountDto = new ActionUserAccountDto();
-        actionUserAccountDto.setId(ACCOUNT_ID);
-        actionUserAccountDto.setAction(DELETE);
+    void shouldDeleteAccount() throws Exception {
         doNothing().when(accountService).performAction(actionUserAccountDto);
         mockMvc.perform(post("/v1/account/action")
                         .content(objectMapper.writeValueAsString(actionUserAccountDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string("User deleted"))
-                        .andDo(print());
+                .andDo(print());
     }
 
     @Test
-    void lockDownAccountTest() throws Exception {
-        ActionUserAccountDto actionUserAccountDto = new ActionUserAccountDto();
-        actionUserAccountDto.setId(ACCOUNT_ID);
+    void shouldLockDownAccount() throws Exception {
         actionUserAccountDto.setAction(BLOCK);
         doNothing().when(accountService).performAction(actionUserAccountDto);
         mockMvc.perform(post("/v1/account/action")
-                        .content(objectMapper.writeValueAsString(actionUserAccountDto))
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(actionUserAccountDto)))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string("User is blocked"))
                 .andDo(print());
@@ -109,9 +117,7 @@ class AccountControllerTest {
     }
 
     @Test
-    void unlockAccountTest() throws Exception {
-        ActionUserAccountDto actionUserAccountDto = new ActionUserAccountDto();
-        actionUserAccountDto.setId(ACCOUNT_ID);
+    void shouldUnlockAccount() throws Exception {
         actionUserAccountDto.setAction(UNBLOCK);
         doNothing().when(accountService).performAction(actionUserAccountDto);
         mockMvc.perform(post("/v1/account/action")
@@ -126,14 +132,16 @@ class AccountControllerTest {
 
 
     @Test
-    void refillBalance() throws Exception {
-        UserIncomeDto userIncomeDto = new UserIncomeDto();
-        userIncomeDto.setId(ACCOUNT_ID);
-        userIncomeDto.setAmount(BigDecimal.valueOf(10000));
+    void shouldRefillBalance() throws Exception {
+        UserIncomeDto userIncomeDto = UserIncomeDto.builder()
+                .id(ACCOUNT_ID)
+                .amount(BigDecimal.valueOf(10000))
+                .build();
 
-        UserIncomeOutDto userIncomeOutDto = new UserIncomeOutDto();
-        userIncomeOutDto.setUserName("steffRY");
-        userIncomeOutDto.setBalance(BigDecimal.valueOf(35000));
+        UserIncomeOutDto userIncomeOutDto = UserIncomeOutDto.builder()
+                .userName("steff")
+                .balance(BigDecimal.valueOf(35000))
+                .build();
 
         when(accountService.processUserIncome(userIncomeDto)).thenReturn(userIncomeOutDto);
         mockMvc.perform(post("/v1/account/income")

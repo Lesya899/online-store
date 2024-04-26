@@ -23,4 +23,11 @@ public interface DiscountRepository extends JpaRepository<DiscountEntity, Intege
                                                                           @Param("dateEnd") LocalDateTime dateEnd);
 
 
+    /**
+     * Получение скидки id типа скидки
+     *
+     * @return DiscountEntity
+     */
+    @Query("select d from DiscountEntity d where d.discountType.id = :id")
+    Optional<DiscountEntity> findByDiscountTypeId(@Param("id") Integer id);
 }

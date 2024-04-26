@@ -31,7 +31,7 @@ class ProductRepositoryTest {
 
 
     @Test
-    void findAllDiscountContainingTest() {
+    void shouldFindAllDiscountContainingTest() {
         DiscountType discountTypeOne = DiscountType.builder()
                 .name("Периодическая")
                 .discountAmount(15)

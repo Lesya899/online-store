@@ -37,7 +37,7 @@ public class AccountController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     //@PreAuthorize("hasAnyAuthority('user', 'admin')")
     public ResponseEntity<UserAccountOutDto> getAccountById(@PathVariable Integer id) throws Exception {
-        UserAccountOutDto userAccountOutDto = accountService.findById(id);
+        UserAccountOutDto userAccountOutDto = accountService.findAccountById(id);
         return ResponseEntity.ok(userAccountOutDto);
     }
 

@@ -1,12 +1,12 @@
 package org.nikdev.useraccount.service.impl;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.nikdev.entityservice.dto.TransactionEventDto;
 import org.nikdev.useraccount.dto.request.ActionUserAccountDto;
@@ -32,60 +32,64 @@ import static org.nikdev.useraccount.constant.ExceptionMessages.USER_NOT_FOUND_E
 @ExtendWith(MockitoExtension.class)
 class AccountServiceImplTest {
 
+    @Mock
+    private AccountRepository accountRepository;
+    @Mock
+    private AccountMapper accountMapper = Mappers.getMapper(AccountMapper.class);
+    @Mock
+    private CreateTransactionProducerService createTransactionProducerService;
+    @InjectMocks
+    private AccountServiceImpl accountService;
 
     private static final int ACCOUNT_ID = 1;
     private static final int NO_EXISTING_ID = 500;
-    @Mock
-    AccountRepository accountRepository;
-    @Spy
-    AccountMapper accountMapper = Mappers.getMapper(AccountMapper.class);
-    @Mock
-    CreateTransactionProducerService createTransactionProducerService;
-    @InjectMocks
-    AccountServiceImpl accountService;
+    private  Account account;
 
+    @BeforeEach
+    void setUp() {
+        account = Account.builder()
+                .id(ACCOUNT_ID)
+                .userName("lilyaN67")
+                .email("lil@mail.ru")
+                .balance(BigDecimal.ZERO)
+                .accountStatus(ACTIVE)
+                .build();
+    }
 
     @Test
-    void createUserAccountTest() throws Exception {
-        String userName = "afinaV";
-        String email = "fin@mail.ru";
-        Account account = new Account();
-        account.setUserName(userName);
-        account.setEmail(email);
-        account.setBalance(BigDecimal.ZERO);
-        account.setAccountStatus(ACTIVE);
-        accountService.createUserAccount(userName, email);
+    void shouldCreateUserAccount() throws Exception {
+        account.setId(null);
+        accountService.createUserAccount(account.getUserName(), account.getEmail());
         verify(accountRepository, times(1)).save(account);
     }
 
+    @Test
+    public void shouldReturnNotFoundAccount() throws Exception {
+        when(accountRepository.findById(NO_EXISTING_ID)).thenReturn(null);
+        Assertions.assertThrows(Exception.class, () -> accountService.findAccountById(NO_EXISTING_ID), USER_NOT_FOUND_ERROR);
+    }
 
     @Test
-    void findByIdTest() throws Exception {
-        Assertions.assertThrows(Exception.class, () -> accountService.findById(null), USER_ID_NOT_SET_ERROR);
-        when(accountRepository.findById(NO_EXISTING_ID)).thenReturn(null);
-        Assertions.assertThrows(Exception.class, () -> accountService.findById(NO_EXISTING_ID), USER_NOT_FOUND_ERROR);
+    public void shouldReturnNotSetAccountId() throws Exception {
+        Assertions.assertThrows(Exception.class, () -> accountService.findAccountById(null), USER_ID_NOT_SET_ERROR);
+    }
 
-        Account account = new Account();
-        account.setId(ACCOUNT_ID);
-        account.setUserName("lilyaN67");
-        account.setEmail("lil@mail.ru");
-        account.setBalance(BigDecimal.valueOf(1500));
-        account.setAccountStatus(ACTIVE);
-
-        UserAccountOutDto expectedAccountOutDto = new UserAccountOutDto();
-        expectedAccountOutDto.setUserName("lilyaN67");
-        expectedAccountOutDto.setEmail("lil@mail.ru");
-        expectedAccountOutDto.setBalance(BigDecimal.valueOf(1500));
-        expectedAccountOutDto.setAccountStatus(ACTIVE);
-
+    @Test
+    void shouldFindAccountById() throws Exception {
+        UserAccountOutDto expectedAccountOutDto = UserAccountOutDto.builder()
+                .userName(account.getUserName())
+                .email(account.getEmail())
+                .balance(account.getBalance())
+                .accountStatus(account.getAccountStatus())
+                .build();
         when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(account));
         when(accountMapper.toDto(account)).thenReturn(expectedAccountOutDto);
-        UserAccountOutDto actualAccountOutDto = accountService.findById(ACCOUNT_ID);
+        UserAccountOutDto actualAccountOutDto = accountService.findAccountById(ACCOUNT_ID);
         assertEquals(expectedAccountOutDto, actualAccountOutDto);
     }
 
     @Test
-    void findEmailAddressesTest() {
+    void shouldFindEmailAddresses() {
         List<String> expectedListAddresses = Arrays.asList("antaF2@mail.ru", "lima34@mail.ru");
         when(accountRepository.findAllEmailAdresses()).thenReturn(expectedListAddresses);
         List<String> actualListAddresses = accountService.findEmailAddresses();
@@ -94,54 +98,44 @@ class AccountServiceImplTest {
 
 
     @Test
-    void performActionTest() throws Exception {
-        when(accountRepository.findById(NO_EXISTING_ID)).thenReturn(null);
-        Assertions.assertThrows(Exception.class, () -> accountService.findById(NO_EXISTING_ID), USER_NOT_FOUND_ERROR);
-
-        Account account = new Account();
-        account.setId(ACCOUNT_ID);
+    void shouldPerformAction() throws Exception {
         account.setAccountStatus(LOCKED);
         when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(account));
 
-        ActionUserAccountDto actionUserAccountDto = new ActionUserAccountDto();
-        actionUserAccountDto.setId(ACCOUNT_ID);
-        actionUserAccountDto.setAction(UNBLOCK);
+        ActionUserAccountDto actionUserAccountDto = ActionUserAccountDto.builder()
+                .id(ACCOUNT_ID)
+                .action(UNBLOCK)
+                .build();
         accountService.performAction(actionUserAccountDto);
         assertEquals(ACTIVE, account.getAccountStatus());
         verify(accountRepository, times(1)).save(account);
-
     }
 
     @Test
-    void processUserIncomeTest() throws Exception {
-        when(accountRepository.findById(NO_EXISTING_ID)).thenReturn(null);
-        Assertions.assertThrows(Exception.class, () -> accountService.findById(NO_EXISTING_ID), USER_NOT_FOUND_ERROR);
+    void shouldProcessUserIncome() throws Exception {
+        UserIncomeDto userIncomeDto = UserIncomeDto.builder()
+                .id(ACCOUNT_ID)
+                .amount(BigDecimal.valueOf(3000))
+                .build();
 
-        UserIncomeDto userIncomeDto = new UserIncomeDto();
-        userIncomeDto.setId(ACCOUNT_ID);
-        userIncomeDto.setAmount(BigDecimal.valueOf(3000));
-
-        Account account = new Account();
-        account.setId(ACCOUNT_ID);
-        account.setUserName("lexRT8");
-        account.setEmail("lex@mail.ru");
-        account.setBalance(BigDecimal.valueOf(4000));
+        account.setBalance(BigDecimal.valueOf(3000));
         when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(account));
 
-        TransactionEventDto transactional = new TransactionEventDto();
-        transactional.setAccountId(userIncomeDto.getId());
-        transactional.setCreateAt(LocalDateTime.now());
-        transactional.setAmount(userIncomeDto.getAmount());
-        createTransactionProducerService.sendCreateTransactionEvent(transactional);
+        TransactionEventDto transactional = TransactionEventDto.builder()
+                .accountId(userIncomeDto.getId())
+                .createAt(LocalDateTime.now())
+                .amount(userIncomeDto.getAmount())
+                .build();
 
-        UserIncomeOutDto expectedUserIncomeOutDto = new UserIncomeOutDto();
-        expectedUserIncomeOutDto.setUserName("lexRT8");
-        expectedUserIncomeOutDto.setBalance(BigDecimal.valueOf(7000));
+        createTransactionProducerService.sendCreateTransactionEvent(transactional);
+        UserIncomeOutDto expectedUserIncomeOutDto = UserIncomeOutDto.builder()
+                .userName(account.getUserName())
+                .balance(BigDecimal.valueOf(3000))
+                .build();
         when(accountMapper.toDoIncomeDto(account)).thenReturn(expectedUserIncomeOutDto);
 
         UserIncomeOutDto actualUserIncomeOutDto = accountService.processUserIncome(userIncomeDto);
         assertEquals(expectedUserIncomeOutDto, actualUserIncomeOutDto);
-
         verify(accountRepository, times(1)).findById(1);
         verify(accountRepository, times(1)).save(account);
         verify(createTransactionProducerService, times(1)).sendCreateTransactionEvent(transactional);

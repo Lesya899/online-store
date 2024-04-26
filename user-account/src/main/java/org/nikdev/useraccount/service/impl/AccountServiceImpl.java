@@ -40,7 +40,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public UserAccountOutDto findById(Integer id) throws Exception {
+    public UserAccountOutDto findAccountById(Integer id) throws Exception {
         if (id == null) {
             throw new Exception(USER_ID_NOT_SET_ERROR);
         }
@@ -78,10 +78,11 @@ public class AccountServiceImpl implements AccountService {
                 .orElseThrow(() -> new Exception(String.format(USER_NOT_FOUND_ERROR, userIncomeDto.getId())));
         userAccount.setBalance(userAccount.getBalance().add(userIncomeDto.getAmount()));
         accountRepository.save(userAccount);
-        TransactionEventDto transactional = new TransactionEventDto();
-        transactional.setAccountId(userIncomeDto.getId());
-        transactional.setCreateAt(LocalDateTime.now());
-        transactional.setAmount(userIncomeDto.getAmount());
+        TransactionEventDto transactional = TransactionEventDto.builder()
+                .accountId(userIncomeDto.getId())
+                .createAt(LocalDateTime.now())
+                .amount(userIncomeDto.getAmount())
+                .build();
         createTransactionProducerService.sendCreateTransactionEvent(transactional);
         return accountMapper.toDoIncomeDto(userAccount);
     }
