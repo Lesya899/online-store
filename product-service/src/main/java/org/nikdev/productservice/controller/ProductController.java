@@ -5,6 +5,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.nikdev.entityservice.dto.ProductDiscountedDto;
 import org.nikdev.productservice.dto.request.ProductSaveDto;
+import org.nikdev.productservice.dto.request.SearchDto;
+import org.nikdev.productservice.dto.response.ProductDto;
 import org.nikdev.productservice.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -40,4 +42,11 @@ public class ProductController {
         List<ProductDiscountedDto> productDiscountedDtoList = productService.getListDiscountedProducts();
         return ResponseEntity.ok(productDiscountedDtoList);
     }
+
+    @Operation(summary = "Получение товаров по нечеткому поиску")
+    @PostMapping(value = "/fuzzy-search", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<ProductDto>> getProductsListBySearchStr(@RequestBody SearchDto searchDto) throws Exception {
+        return new ResponseEntity<>(productService.getProductsListBySearchStr(searchDto), HttpStatus.OK);
+    }
+
 }

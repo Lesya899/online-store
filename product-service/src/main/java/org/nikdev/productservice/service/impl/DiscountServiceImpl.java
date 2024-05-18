@@ -9,6 +9,8 @@ import org.nikdev.productservice.repository.DiscountTypeRepository;
 import org.nikdev.productservice.service.DiscountService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.Optional;
+import static org.nikdev.productservice.constant.MessageConstants.Discount.DISCOUNT_ALREADY_EXISTS;
 import static org.nikdev.productservice.constant.MessageConstants.Discount.DISCOUNT_NOT_FOUND;
 
 
@@ -20,17 +22,16 @@ public class DiscountServiceImpl implements DiscountService {
     private final DiscountTypeRepository discountTypeRepository;
 
 
-
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void saveAndUpdateDiscount(DiscountSaveDto discountSaveDto) throws Exception {
-        DiscountEntity discountEntity;
-        if (discountSaveDto.getId() != null) {
-            discountEntity = discountRepository.findById(discountSaveDto.getId())
-                    .orElseThrow(() -> new Exception(DISCOUNT_NOT_FOUND));
-        } else {
-            discountEntity = new DiscountEntity();
+        Optional<DiscountEntity> discount = discountRepository.findDiscountByTypeAndDateStartBetween(discountSaveDto.getDiscountType(),
+                discountSaveDto.getDateStart(), discountSaveDto.getDateEnd());
+        if (discountSaveDto.getId() == null && discount.isPresent()) {
+            throw new Exception(DISCOUNT_ALREADY_EXISTS);
         }
+        DiscountEntity discountEntity = discountSaveDto.getId() != null? discountRepository.findById(discountSaveDto.getId())
+                .orElseThrow(() -> new Exception(DISCOUNT_NOT_FOUND)): new DiscountEntity();
         DiscountType discountType = discountTypeRepository.findDiscountTypeByName(discountSaveDto.getDiscountType());
         discountEntity.setDiscountType(discountType);
         discountEntity.setDateStart(discountSaveDto.getDateStart());

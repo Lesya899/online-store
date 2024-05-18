@@ -5,6 +5,7 @@ public class MessageConstants {
     public static class Discount {
         public static final String DISCOUNT_NOT_FOUND = "Скидка не найдена";
         public static final String SAVING_DISCOUNT_SUCCESSFUL = "Операция сохранения/изменения скидки успешно выполнена";
+        public static final String DISCOUNT_ALREADY_EXISTS = "Скидка уже существует";
     }
 
 

@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2024-05-10-18-40-create-product-review.yml
+      author: ov-nikolaeva
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_name
+                  type: varchar(128)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: content
+                  type: text
+              - column:
+                  name: product_id
+                  type: INT
+                  constraints:
+                    foreignKeyName: fk_product_review
+                    references: product(id)
+                    nullable: true
+            remarks: Данные об отзыве на товар
+            tableName: product_review
+
+
+

@@ -47,12 +47,8 @@ public class ProductEntity {
     private OrganizationEntity organization;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProductReviewEntity> reviews = new ArrayList<>();
-
-    @ElementCollection
-    @CollectionTable(name = "product_keywords", joinColumns = @JoinColumn(name = "product_id"))
-    private List<String> keywords = new ArrayList<>();
+    private List<ProductReviewEntity> reviewList = new ArrayList<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProductRatingEntity> ratings = new ArrayList<>();
+    private List<ProductRatingEntity> ratingList = new ArrayList<>();
 }

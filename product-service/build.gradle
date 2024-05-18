@@ -2,7 +2,10 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.2.1'
     id 'io.spring.dependency-management' version '1.1.4'
+
 }
+
+
 
 group = 'org.nikdev'
 version = '0.0.1-SNAPSHOT'
@@ -21,6 +24,8 @@ repositories {
     mavenCentral()
 }
 
+
+
 ext {
     set('springCloudVersion', "2023.0.0")
 }
@@ -36,11 +41,20 @@ dependencies {
     implementation 'io.swagger:swagger-annotations:2.0.0-rc2'
     implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
     implementation 'org.nikdev:entity-service:0.0.1-SNAPSHOT'
-
     compileOnly 'org.projectlombok:lombok'
+
+
+    implementation 'com.querydsl:querydsl-jpa:5.1.0:jakarta'
+    implementation 'com.querydsl:querydsl-apt:5.1.0'
+
+    annotationProcessor 'jakarta.persistence:jakarta.persistence-api:3.1.0'
+    annotationProcessor 'com.querydsl:querydsl-apt:5.1.0:jakarta'
     runtimeOnly 'org.postgresql:postgresql'
+
     annotationProcessor 'org.projectlombok:lombok'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'com.h2database:h2:2.2.224'
 }
@@ -54,3 +68,5 @@ dependencyManagement {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+

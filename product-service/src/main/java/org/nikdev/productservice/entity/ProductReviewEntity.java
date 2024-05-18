@@ -1,11 +1,17 @@
 package org.nikdev.productservice.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Data
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "product_review")
 public class ProductReviewEntity {
 
@@ -13,9 +19,11 @@ public class ProductReviewEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private Integer userId;
+    @Column(name = "user_name")
+    private String userName;
 
-    @Lob
+
+    @Column(name = "content")
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

@@ -101,9 +101,7 @@ class ProductServiceImplTest {
                 .quantityStock(productSaveDto.getQuantityStock())
                 .discount(discountEntity)
                 .organization(organization)
-                .reviews(List.of())
-                .keywords(List.of())
-                .ratings(List.of())
+                .ratingList(List.of())
                 .build();
 
 
@@ -162,9 +160,7 @@ class ProductServiceImplTest {
                 .quantityStock(4)
                 .discount(discountEntity)
                 .organization(organization)
-                .reviews(List.of())
-                .keywords(List.of())
-                .ratings(List.of())
+                .ratingList(List.of())
                 .build();
 
         ProductDiscountedDto productDiscountedDtoOne = ProductDiscountedDto.builder()

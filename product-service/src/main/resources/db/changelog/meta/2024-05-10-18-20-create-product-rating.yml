@@ -1,0 +1,28 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2024-05-10-18-20-create-product-rating.yml
+      author: ov-nikolaeva
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: rating
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: product_id
+                  type: INT
+                  constraints:
+                    foreignKeyName: fk_product
+                    references: product(id)
+                    nullable: true
+            remarks: Данные о рейтинге товара
+            tableName: product_rating

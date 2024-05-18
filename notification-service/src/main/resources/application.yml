@@ -6,13 +6,22 @@ spring:
   config:
     import: optional:configserver:http://localhost:8888
   mail:
-    host: ${MAIL_HOST}
-    port: ${MAIL_PORT}
-    username: ${MAIL_USERNAME}
-    password: ${MAIL_PASSWORD}
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
+    host: smtp.mail.ru
+    port: 587
+    username: aleks_ni91@mail.ru
+    password: ejnECEdTb8cV71rwADan
+    protocol: smtp
+
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+
+notification:
+  send-email-cron: "0 * * * * *"
+
+
+
+
+
+
+

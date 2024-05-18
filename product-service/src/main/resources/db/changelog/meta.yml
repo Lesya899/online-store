@@ -11,5 +11,11 @@ databaseChangeLog:
   - include:
       file: "/meta/2024-01-08-18-20-create-product.yml"
       relativeToChangelogFile: true
+  - include:
+      file: "/meta/2024-05-10-18-20-create-product-rating.yml"
+      relativeToChangelogFile: true
+  - include:
+      file: "/meta/2024-05-10-18-40-create-product-review.yml"
+      relativeToChangelogFile: true
 
 
