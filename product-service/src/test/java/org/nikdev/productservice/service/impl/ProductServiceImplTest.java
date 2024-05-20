@@ -101,6 +101,7 @@ class ProductServiceImplTest {
                 .quantityStock(productSaveDto.getQuantityStock())
                 .discount(discountEntity)
                 .organization(organization)
+                .reviewList(List.of())
                 .ratingList(List.of())
                 .build();
 

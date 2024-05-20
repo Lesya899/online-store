@@ -1,13 +1,9 @@
 package org.nikdev.productservice.service.impl;
 
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Order;
-import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.dsl.PathBuilder;
-import com.querydsl.jpa.JPQLQuery;
+
+import com.querydsl.core.types.*;
+import com.querydsl.core.types.dsl.*;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.nikdev.entityservice.dto.ProductDiscountedDto;
 import org.nikdev.productservice.dto.request.ProductSaveDto;
@@ -20,12 +16,9 @@ import org.nikdev.productservice.repository.DiscountTypeRepository;
 import org.nikdev.productservice.repository.OrganizationRepository;
 import org.nikdev.productservice.repository.ProductRepository;
 import org.nikdev.productservice.service.ProductService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.support.PageableExecutionUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 
 import java.util.List;
 import java.util.Optional;
@@ -40,9 +33,11 @@ import static org.nikdev.productservice.constant.MessageConstants.Product.PRODUC
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
-    @PersistenceContext
-    private EntityManager entityManager;
+    @Value("${fuzzy.coefficient}")
+    private String coefficient;
 
+
+    private final JPAQueryFactory jpaQueryFactory;
     private final ProductRepository productRepository;
     private final DiscountRepository discountRepository;
     private final OrganizationRepository organizationRepository;
@@ -106,34 +101,33 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductDto> getProductsListBySearchStr(SearchDto searchDto) throws Exception {
+        QProductEntity product = QProductEntity.productEntity;
+        String searchStr = searchDto.getSearchStr();
         String sortField = searchDto.getSorting().getFieldName();
         String sortDirection = searchDto.getSorting().getSortingDirection();
-        QProductEntity product = QProductEntity.productEntity;
-        JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
-        BooleanBuilder predicate = new BooleanBuilder();
 
-        if (searchDto.getSearchStr() != null && !searchDto.getSearchStr().isEmpty()) {
-            predicate.and(product.name.containsIgnoreCase(searchDto.getSearchStr()));
+        StringExpression nameProduct = product.name;
+        Double coefficientValue = Double.parseDouble(coefficient);
+        BooleanExpression predicate = Expressions.TRUE;
+
+        if (searchStr != null && !searchStr.isEmpty()) {
+            NumberExpression<Double> similarityExpression = Expressions.numberTemplate(Double.class, "similarity({0}, {1})", nameProduct, searchStr);
+            predicate = similarityExpression.gt(coefficientValue);
         }
-
         OrderSpecifier<?> orderSpecifier = null;
         if (sortField != null && !sortField.isEmpty()) {
             PathBuilder<ProductEntity> pathBuilder = new PathBuilder<>(ProductEntity.class, "productEntity");
-            orderSpecifier = new OrderSpecifier(sortDirection.equalsIgnoreCase("asc") ? Order.ASC
-                    : Order.DESC, pathBuilder.get(sortField));
+            orderSpecifier = new OrderSpecifier<>(sortDirection.equalsIgnoreCase("asc") ? Order.ASC : Order.DESC, Expressions.stringTemplate(String.valueOf(pathBuilder.get(sortField))));
         }
 
-        JPQLQuery<ProductEntity> query = queryFactory.selectFrom(product)
+        List<ProductEntity> productList = jpaQueryFactory.selectFrom(product)
                 .where(predicate)
                 .orderBy(orderSpecifier)
                 .offset((searchDto.getPageNumber() - 1L) * searchDto.getCountOnPage())
-                .limit(searchDto.getCountOnPage());
+                .limit(searchDto.getCountOnPage())
+                .fetch();
 
-        long totalCount = query.fetchCount();
-        Page<ProductEntity> productEntityList = PageableExecutionUtils.getPage(query.fetch(), PageRequest.of(searchDto.getPageNumber(),
-                searchDto.getCountOnPage()), () -> totalCount);
-
-        return productMapper.toProductDtoList(productEntityList.getContent());
+        return productMapper.toProductDtoList(productList);
     }
 }
 
