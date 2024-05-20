@@ -8,8 +8,8 @@ spring:
   mail:
     host: smtp.mail.ru
     port: 587
-    username: aleks_ni91@mail.ru
-    password: ejnECEdTb8cV71rwADan
+    username: *********
+    password: *********
     protocol: smtp
 
   autoconfigure:
