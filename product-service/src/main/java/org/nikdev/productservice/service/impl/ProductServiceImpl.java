@@ -117,7 +117,8 @@ public class ProductServiceImpl implements ProductService {
         OrderSpecifier<?> orderSpecifier = null;
         if (sortField != null && !sortField.isEmpty()) {
             PathBuilder<ProductEntity> pathBuilder = new PathBuilder<>(ProductEntity.class, "productEntity");
-            orderSpecifier = new OrderSpecifier<>(sortDirection.equalsIgnoreCase("asc") ? Order.ASC : Order.DESC, Expressions.stringTemplate(String.valueOf(pathBuilder.get(sortField))));
+            orderSpecifier = new OrderSpecifier<>(sortDirection.equalsIgnoreCase("asc") ? Order.ASC : Order.DESC,
+                    Expressions.stringTemplate(String.valueOf(pathBuilder.get(sortField))));
         }
 
         List<ProductEntity> productList = jpaQueryFactory.selectFrom(product)
