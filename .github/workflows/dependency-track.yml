@@ -1,1 +1,19 @@
+name: Dependency-Track Scan
 
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest steps:
+      - name: Checkout code uses: actions/checkout@v2 - name: Set up Java uses: actions/setup-java@v2 with:
+          java-version: '21'   
+        run: |
+          mvn dependency-check:check  # или другая команда для запуска сканирования      - name: Send results to Dependency-Track run: |
+          curl -X POST -H "X-Api-Key: ${{ secrets.DEPENDENCY_TRACK_API_KEY }}" \
+          -H "Content-Type: application/json" \
+          -d @path/to/your/dependency-check-report.json \
+          "http://your-dependency-track-instance/api/v1/project/{projectId}/analysis"
