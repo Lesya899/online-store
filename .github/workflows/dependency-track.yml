@@ -1,25 +1,27 @@
-name: Dependency-Track Scan
+name: Dependency Track Scan
 
 on:
   push:
     branches:
+      - main pull_request:
+    branches:
       - main
-  pull_request:
 
 jobs:
   scan:
     runs-on: ubuntu-latest steps:
-      - name: Checkout code uses: actions/checkout@v2 - name: Set up Java uses: actions/setup-java@v2
-        with:
-          java-version: '21'
-
-      - name: Run Dependency-Check
+      - name: Checkout code uses: actions/checkout@v2 - name: Set up JDK
+        uses: actions/setup-java@v1 with:
+          java-version: '21' 
         run: |
-          mvn dependency-check:check  # или другая команда для запуска сканирования
+          ./gradlew build  
 
-      - name: Send results to Dependency-Track
+      - name: Scan dependencies
+        env:
+          DEPENDENCY_TRACK_API_URL: ${{ secrets.DEPENDENCY_TRACK_API_URL }}
+          DEPENDENCY_TRACK_API_KEY: ${{ secrets.DEPENDENCY_TRACK_API_KEY }}
         run: |
-          curl -X POST -H "X-Api-Key: ${{ secrets.DEPENDENCY_TRACK_API_KEY }}" \
+          curl -X POST "$DEPENDENCY_TRACK_API_URL/api/v1/project/{projectId}/analysis" \
+          -H "X-Api-Key: $DEPENDENCY_TRACK_API_KEY" \
           -H "Content-Type: application/json" \
-          -d @path/to/your/dependency-check-report.json \
-          "http://your-dependency-track-instance/api/v1/project/{projectId}/analysis"
+          -d '{"projectId":"a2240a31-ae2e-485f-b624-9006b305a226","projectVersion":"1.0.0","projectName":"stores"}'
