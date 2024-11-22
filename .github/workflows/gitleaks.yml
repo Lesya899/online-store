@@ -23,7 +23,7 @@ jobs:
 
     - name: Run Gitleaks
       run: |
-        gitleaks git --redact -v --exit-code=2 --report-format=json --report-path=gitleaks-report.json --log-level=debug
+        gitleaks git --redact -v --exit-code=2 --report-format=json --report-path=gitleaks-report.json --log-level=error
 
     - name: Upload report to API
       run: |
