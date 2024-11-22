@@ -9,7 +9,7 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Run Gitleaks
       run: gitleaks git --v --report-path gitleaks-report.json
