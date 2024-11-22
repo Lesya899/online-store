@@ -9,7 +9,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Run Gitleaks
-      run: gitleaks git --verbose --report-path gitleaks-report.json
+      run: gitleaks git --v --report-path gitleaks-report.json
 
     - name: Upload report to API
       run: |
