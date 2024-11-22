@@ -10,11 +10,11 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
+      with:
+          fetch-depth: 0
 
     - name: Run Gitleaks
-      uses: zricethezav/gitleaks-action@v4
-      id: gitleaks
-        
+      uses: gitleaks/gitleaks-action@v2      
 
     - name: Upload report to API
       run: |
