@@ -16,16 +16,16 @@ jobs:
     - name: Run Gitleaks
       uses: gitleaks/gitleaks-action@v2
       with:
-          args: detect --redact -v --exit-code=2 --report-format=json --report-path=gitleaks-report.json --log-level=debug --log-opts=-1      
+          args: detect --redact -v --exit-code=2 --report-format=json --report-path=result.json --log-level=debug --log-opts=-1      
 
     - name: Upload report to API
       run: |
         if [ -f gitleaks-report.json ]; then
           echo "Отчет найден, отправка на API..."
           curl -X POST -H "Content-Type: application/json" \
-          -d @gitleaks-report.json http://localhost:8080/api/report
+          -d @result.json http://localhost:8080/api/report
         else
-          echo "Отчет gitleaks-report.json не найден."
+          echo "result.json не найден."
           exit 1
         fi
          
