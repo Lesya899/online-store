@@ -23,7 +23,7 @@ jobs:
 
     - name: Run Gitleaks
       run: |
-        gitleaks git -v --report-format=json --report-path=gitleaks-report.json
+        gitleaks git --report-path gitleaks-report.json
 
     - name: Upload report to API
       run: |
