@@ -16,12 +16,9 @@ jobs:
 
     - name: Install Gitleaks
       run: |
-        curl -sSL https://github.com/gitleaks/gitleaks/releases/tag/v8.21.2/gitleaks_8.21.2_linux_arm64 -o gitleaks
-        if [ ! -f gitleaks ]; then
-          echo "Ошибка: файл gitleaks не был загружен."
-          exit 1
-        fi
-        chmod +x gitleaks
+        git clone https://github.com/gitleaks/gitleaks.git
+        cd gitleaks
+        make build
         sudo mv gitleaks /usr/local/bin/
 
     - name: Run Gitleaks
