@@ -16,7 +16,7 @@ jobs:
 
     - name: Install Gitleaks
       run: |
-        curl -sSL https://github.com/zricethezav/gitleaks/releases/latest/download/gitleaks-linux-amd64 -o gitleaks
+        curl -sSL https://github.com/gitleaks/gitleaks
         if [ ! -f gitleaks ]; then
           echo "Ошибка: файл gitleaks не был загружен."
           exit 1
