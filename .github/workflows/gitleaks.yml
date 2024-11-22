@@ -29,8 +29,7 @@ jobs:
       run: |
         if [ -f gitleaks-report.json ]; then
           echo "Отчет найден, отправка на API..."
-          curl -X POST -H "Content-Type: application/json" \
-          --data-binary @gitleaks-report.json https://localhost:8080/api/report
+          curl -X POST -F "file=@gitleaks-report.json" http://localhost:8080/api/report
         else
           echo "gitleaks-report.json не найден."
           exit 1
