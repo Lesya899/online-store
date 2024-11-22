@@ -3,7 +3,7 @@ repos:
     rev: v8.19.0
     hooks:
       - id: gitleaks
-        args: ["detect", "--report-path=gitleaks-report.json"]
+        args: ["git", "--report-path=gitleaks-report.json"]
       - id: send-report
         name: Send Gitleaks Report
         entry: ./send_report.sh
