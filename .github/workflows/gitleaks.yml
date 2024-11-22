@@ -12,11 +12,17 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Run Gitleaks
-      uses: actions/checkout@v4
+      uses: zricethezav/gitleaks-action@v4
+      id: gitleaks
         
 
     - name: Upload report to API
       run: |
-        curl -X POST -H "Content-Type: application/json" \
-        -d @gitleaks-report.json http://localhost:8080/api/report
+        if [ -f gitleaks-report.json ]; then
+          echo "Отчет найден, отправка на API..."
+          curl -X POST -H "Content-Type: application/json" \
+          -d @gitleaks-report.json http://localhost:8080/api/report
+        else
+          echo "Отчет gitleaks-report.json не найден."
+          exit 1
          
