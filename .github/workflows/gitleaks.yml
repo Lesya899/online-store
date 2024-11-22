@@ -9,21 +9,21 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v2
       with:
           fetch-depth: 0
 
     - name: Run Gitleaks
-      uses: zricethezav/gitleaks-action@v2.0.0
+      run: gitleaks detect --json --report-path gitleaks-report.json
 
     - name: Upload report to API
       run: |
         if [ -f gitleaks-report.json ]; then
           echo "Отчет найден, отправка на API..."
           curl -X POST -H "Content-Type: application/json" \
-          -d @result.json http://localhost:8080/api/report
+          -d @gitleaks-report.json http://localhost:8080/api/report
         else
-          echo "result.json не найден."
+          echo "gitleaks-report.json не найден."
           exit 1
         fi
          
