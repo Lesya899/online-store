@@ -17,12 +17,17 @@ jobs:
     - name: Install Gitleaks
       run: |
         curl -sSL https://github.com/zricethezav/gitleaks/releases/latest/download/gitleaks-linux-amd64 -o gitleaks
+        if [ ! -f gitleaks ]; then
+          echo "Ошибка: файл gitleaks не был загружен."
+          exit 1
+        fi
         chmod +x gitleaks
         sudo mv gitleaks /usr/local/bin/
 
     - name: Run Gitleaks
       run: |
-        gitleaks git --redact -v --exit-code=2 --report-format=json --report-path=gitleaks-report.json --log-level=debug --log-opts=-1
+        gitleaks version
+        gitleaks detect --redact -v --exit-code=2 --report-format=json --report-path=gitleaks-report.json --log-level=debug --log-opts=-1
 
     - name: Upload report to API
       run: |
@@ -34,5 +39,3 @@ jobs:
           echo "gitleaks-report.json не найден."
           exit 1
         fi
-
-         
