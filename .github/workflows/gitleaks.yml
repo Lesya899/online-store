@@ -11,10 +11,12 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
       with:
-          fetch-depth: 0
+       fetch-depth: 0
 
     - name: Run Gitleaks
-      run: gitleaks git -v --report-path gitleaks-report.json
+      uses: gitleaks/gitleaks-action@v2
+      with:
+        args: detect --redact -v --exit-code=2 --report-format=json --report-path=gitleaks-report.json --log-level=debug --log-opts=-1
 
     - name: Upload report to API
       run: |
