@@ -3,6 +3,7 @@ on:
   pull_request:
   push:
   workflow_dispatch:
+
 jobs:
   scan:
     runs-on: ubuntu-latest
@@ -11,12 +12,17 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
       with:
-       fetch-depth: 0
+        fetch-depth: 0
+
+    - name: Install Gitleaks
+      run: |
+        curl -sSL https://github.com/zricethezav/gitleaks/releases/latest/download/gitleaks-linux-amd64 -o gitleaks
+        chmod +x gitleaks
+        sudo mv gitleaks /usr/local/bin/
 
     - name: Run Gitleaks
-      uses: gitleaks/gitleaks-action@v2
-      with:
-        args: detect --redact -v --exit-code=2 --report-format=json --report-path=gitleaks-report.json --log-level=debug --log-opts=-1
+      run: |
+        gitleaks detect --redact -v --exit-code=2 --report-format=json --report-path=gitleaks-report.json --log-level=debug --log-opts=-1
 
     - name: Upload report to API
       run: |
@@ -28,4 +34,5 @@ jobs:
           echo "gitleaks-report.json не найден."
           exit 1
         fi
+
          
