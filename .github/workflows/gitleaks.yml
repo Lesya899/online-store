@@ -25,4 +25,5 @@ jobs:
         else
           echo "Отчет gitleaks-report.json не найден."
           exit 1
+        fi
          
