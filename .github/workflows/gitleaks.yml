@@ -27,5 +27,5 @@ jobs:
 
     - name: Upload report to API
       run: |
-       curl -X POST -f "file=@gitleaks-report.json" http://localhost:8080/api/report
+       curl -X POST -f "file=@gitleaks-report.json" http://192.168.50.236:8080/api/report
         
